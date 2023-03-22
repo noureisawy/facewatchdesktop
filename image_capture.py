@@ -1,13 +1,15 @@
 import time
 from SMWinservice import SMWinservice
 import cv2
-import sys
+import os
+current_dir = os.getcwd()
+print(" directory ",current_dir)
 
 
 class FaceWatchService(SMWinservice):
     _svc_name_ = "FaceWatchService"
-    _svc_display_name_ = "Python Corner's Winservice Example"
-    _svc_description_ = "That's a great winservice! :)"
+    _svc_display_name_ = "Face Watch Service"
+    _svc_description_ = "Face service serves face watch application"
 
     def start(self, argv=("",)):
         self.map = {
