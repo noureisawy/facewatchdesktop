@@ -77,6 +77,16 @@ padding: 10px;
 background-color:#2c313c;
 }
 
+#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn{
+background-color:#16191d;
+border-radius:15px;
+padding: 10px;
+}
+
+#neutralBtn:hover, #surpriseBtn:hover, #angryBtn:hover, #sadBtn:hover, #happyBtn:hover, #fearBtn:hover, #disgustBtn:hover{
+background-color:#2c313c;
+}
+
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -1393,22 +1403,327 @@ background-color:#2c313c;
              <item>
               <widget class="QCustomStackedWidget" name="centerMenuPages">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="page_4">
                 <layout class="QHBoxLayout" name="horizontalLayout_15">
-                 <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-                  <widget class="QLabel" name="label_9">
-                   <property name="font">
-                    <font>
-                     <pointsize>12</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Home</string>
-                   </property>
+                 <item>
+                  <widget class="QWidget" name="widget_9" native="true">
+                   <layout class="QVBoxLayout" name="verticalLayout_16">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item alignment="Qt::AlignTop">
+                     <widget class="QWidget" name="widget_12" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_17">
+                       <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+                        <widget class="QLabel" name="label_9">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Home</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignTop">
+                     <widget class="QWidget" name="widget_10" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_25">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="neutralBtn">
+                         <property name="styleSheet">
+                          <string notr="true">background-color:#2c313c;</string>
+                         </property>
+                         <property name="text">
+                          <string>neutral</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="surpriseBtn">
+                         <property name="text">
+                          <string>surprise</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="angryBtn">
+                         <property name="text">
+                          <string>angry</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="sadBtn">
+                         <property name="text">
+                          <string>sad</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="happyBtn">
+                         <property name="text">
+                          <string>happy</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="fearBtn">
+                         <property name="text">
+                          <string>fear</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="disgustBtn">
+                         <property name="text">
+                          <string>disgust</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="widget_11" native="true">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_26">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QCustomStackedWidget" name="imagesPages">
+                         <property name="currentIndex">
+                          <number>0</number>
+                         </property>
+                         <widget class="QWidget" name="neutralPage">
+                          <widget class="QScrollArea" name="scrollArea_2">
+                           <property name="geometry">
+                            <rect>
+                             <x>100</x>
+                             <y>220</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="neutralArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="sadPage">
+                          <widget class="QScrollArea" name="scrollArea_3">
+                           <property name="geometry">
+                            <rect>
+                             <x>160</x>
+                             <y>200</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="sadArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="angryPage">
+                          <widget class="QScrollArea" name="scrollArea_4">
+                           <property name="geometry">
+                            <rect>
+                             <x>90</x>
+                             <y>170</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="angryArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="happyPage">
+                          <widget class="QScrollArea" name="scrollArea_5">
+                           <property name="geometry">
+                            <rect>
+                             <x>160</x>
+                             <y>200</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="happyArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="fearPage">
+                          <widget class="QScrollArea" name="scrollArea_6">
+                           <property name="geometry">
+                            <rect>
+                             <x>180</x>
+                             <y>170</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="fearArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="disgustPage">
+                          <widget class="QScrollArea" name="scrollArea">
+                           <property name="geometry">
+                            <rect>
+                             <x>130</x>
+                             <y>150</y>
+                             <width>120</width>
+                             <height>87</height>
+                            </rect>
+                           </property>
+                           <property name="widgetResizable">
+                            <bool>true</bool>
+                           </property>
+                           <widget class="QWidget" name="disgustArea">
+                            <property name="geometry">
+                             <rect>
+                              <x>0</x>
+                              <y>0</y>
+                              <width>120</width>
+                              <height>87</height>
+                             </rect>
+                            </property>
+                           </widget>
+                          </widget>
+                         </widget>
+                         <widget class="QWidget" name="surprisePage">
+                          <layout class="QHBoxLayout" name="horizontalLayout_27">
+                           <item>
+                            <widget class="QScrollArea" name="scrollArea_8">
+                             <property name="widgetResizable">
+                              <bool>true</bool>
+                             </property>
+                             <widget class="QWidget" name="surpriseArea">
+                              <property name="geometry">
+                               <rect>
+                                <x>0</x>
+                                <y>0</y>
+                                <width>478</width>
+                                <height>450</height>
+                               </rect>
+                              </property>
+                             </widget>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                 </layout>

@@ -127,7 +127,24 @@
       ]
     },
     {
-      "Buttons": ["scatterBtn", "pieChartBtn", "barChartBtn","lineChartBtn"],
+      "Buttons": [
+        "surpriseBtn",
+        "happyBtn",
+        "sadBtn",
+        "angryBtn",
+        "disgustBtn",
+        "fearBtn",
+        "neutralBtn"
+      ],
+      "Style": [
+        {
+          "Active": "background-color: #2c313c;",
+          "NotActive": ""
+        }
+      ]
+    },
+    {
+      "Buttons": ["scatterBtn", "pieChartBtn", "barChartBtn", "lineChartBtn"],
       "Style": [
         {
           "Active": "background-color: #2c313c;",
@@ -151,6 +168,24 @@
       ]
     },
     {
+      "name": "imagesPages",
+      "navigation": [
+        {
+          "navigationButtons": [
+            {
+              "surpriseBtn": "surprisePage",
+              "happyBtn": "happyPage",
+              "sadBtn": "sadPage",
+              "angryBtn": "angryPage",
+              "disgustBtn": "disgustPage",
+              "fearBtn": "fearPage",
+              "neutralBtn": "neutralPage"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "dataAnalysisPages",
       "navigation": [
         {
@@ -159,7 +194,7 @@
               "scatterBtn": "scatterPlotPage",
               "barChartBtn": "barChartPage",
               "pieChartBtn": "pieChartPage",
-              "lineChartBtn":"lineChartPage"
+              "lineChartBtn": "lineChartPage"
             }
           ]
         }
