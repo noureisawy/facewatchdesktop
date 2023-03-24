@@ -39,7 +39,7 @@ class Data:
                 sad INTEGER NOT NULL,
                 surprise INTEGER NOT NULL,
                 neutral INTEGER NOT NULL, 
-                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                timestamp DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
             )
             """
             )

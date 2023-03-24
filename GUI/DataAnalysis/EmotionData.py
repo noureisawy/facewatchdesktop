@@ -14,5 +14,14 @@ class EmotionData:
         self.dateTimeEndComponent = dateTimeEndComponent
         self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
     
+    def refresh_data(self, dateTimeStartComponent, dateTimeEndComponent):
+        self.dateTimeStart = dateTimeStartComponent.dateTime().toString(
+            "yyyy-MM-dd hh:mm:ss"
+        )
+        self.dateTimeEnd = dateTimeEndComponent.dateTime().toString(
+            "yyyy-MM-dd hh:mm:ss"
+        )
+        self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
+    
 
     
