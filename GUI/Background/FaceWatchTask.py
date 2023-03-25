@@ -1,49 +1,35 @@
-import time
-from SMWinservice import SMWinservice
+from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 import cv2
-import os
-
-from GUI.DB.Data import Data
 from deepface import DeepFace
-
-data = Data()
-class FaceWatchService(SMWinservice):
-    _svc_name_ = "FaceWatchService"
-    _svc_display_name_ = "Face Watch Service"
-    _svc_description_ = "Face service serves face watch application"
-
-    def start(self, argv=("",)):
-        self.map = {
-            "": 1,
-            "15 sec": 15,
-            "15 min": 13 * 60,
-            "30 min": 30 * 60,
-            "1 h": 60 * 60,
-        }
-        arg1 = argv[1] if len(argv) > 1 else ""
-        self.interval = self.map[arg1]
-        self.isrunning = True
-
-    def stop(self):
-        self.isrunning = False
-
-    def main(self):
-        self.interval = 15
-        while self.isrunning:
-            take_photo()
-            time.sleep(self.interval)
+from DB.Data import Data
+import time
 
 
-def take_photo():
-    cap = cv2.VideoCapture(1)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-    ret, frame = cap.read()
-    cap.release()
-    try:
+class FaceWatchTask(QThread):
+    finished = pyqtSignal()
+    started = pyqtSignal()
+
+    def __init__(self, interval):
+        self.data = Data()
+        self.is_taking_image = True
+        self.is_running = True
+        self.interval = interval
+        super().__init__()
+
+    def take_photo(self):
+        cap = cv2.VideoCapture(0)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+        ret, frame = cap.read()
+        cap.release()
+        try:
+            self.analyze_frame(frame)
+        except Exception as e:
+            print(e)
+
+    def analyze_frame(self, frame):
         sub_file_name = "neutral"
         analysis = DeepFace.analyze(frame, actions=["emotion"])
-        print(analysis)
         match analysis[0]["dominant_emotion"]:
             case "angry":
                 sub_file_name = "angry"
@@ -60,7 +46,7 @@ def take_photo():
             case "neutral":
                 sub_file_name = "neutral"
         print(analysis[0])
-        data.insert_emotion(analysis[0])
+        self.data.insert_emotion(analysis[0])
         filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         # draw rectangle to main image around the face
         cv2.rectangle(
@@ -84,10 +70,29 @@ def take_photo():
             2,
         )
         cv2.imwrite(filename, frame)
-    except Exception as e:
-        print(e)
 
+    @pyqtSlot()
+    def start_task(self):
+        self._is_running = True
+        self.started.emit()
+        self.start()
 
-if __name__ == "__main__":
-    FaceWatchService.parse_command_line()
-    # take_photo()
+    @pyqtSlot()
+    def stop_task(self):
+        self._is_running = False
+
+    def run(self):  # sourcery skip: avoid-builtin-shadow
+        while self.is_running:
+            map = {
+                "": 1,
+                "15 sec": 15,
+                "15 min": 13 * 60,
+                "30 min": 30 * 60,
+                "1 h": 60 * 60,
+            }
+            if self.is_taking_image:
+                self.take_photo()
+            time.sleep(map.get(self.interval, 1))
+
+        self.finished.emit()
+

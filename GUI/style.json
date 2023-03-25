@@ -144,6 +144,15 @@
       ]
     },
     {
+      "Buttons": ["settingsBtn", "infoBtn", "helpBtn"],
+      "Style": [
+        {
+          "Active": "background-color: #2c313c;",
+          "NotActive": ""
+        }
+      ]
+    },
+    {
       "Buttons": ["scatterBtn", "pieChartBtn", "barChartBtn", "lineChartBtn"],
       "Style": [
         {
@@ -162,24 +171,6 @@
             {
               "profileBtn": "page_8",
               "notBtn": "page_9"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "imagesPages",
-      "navigation": [
-        {
-          "navigationButtons": [
-            {
-              "surpriseBtn": "surprisePage",
-              "happyBtn": "happyPage",
-              "sadBtn": "sadPage",
-              "angryBtn": "angryPage",
-              "disgustBtn": "disgustPage",
-              "fearBtn": "fearPage",
-              "neutralBtn": "neutralPage"
             }
           ]
         }
