@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1112</width>
+    <width>1371</width>
     <height>642</height>
    </rect>
   </property>
@@ -856,7 +856,7 @@ background-color:#2c313c;
              </size>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page">
              <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -2238,6 +2238,7 @@ background-color:#2c313c;
  <resources>
   <include location="resources.qrc"/>
   <include location="resources.qrc"/>
+  <include location="../../../../.designer/backup/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

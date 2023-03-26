@@ -12,7 +12,7 @@ from DataAnalysis.EmotionData import EmotionData
 from Custom_Widgets.Widgets import *
 from EmotionGallery.ReadImages import ReadImages
 from Background.FaceWatchTask import FaceWatchTask
-
+from Background.Notification import Notification
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
 
         # Data Analysis Page
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
-        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addDays(-1))
+        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addSecs(-3600 * 2))
 
         # on change date time start and time end
         self.ui.dateTimeStart.dateTimeChanged.connect(self.update_data)
@@ -92,9 +92,13 @@ class MainWindow(QMainWindow):
         action_hide.triggered.connect(self.hide)
         action_show.triggered.connect(self.showNormal)
 
+        # notification
+        notification = Notification(tray)
+
         # Settings Page
+
         # run face watch background task
-        self.faceWatchTask = FaceWatchTask(interval=self.ui.watchInt.currentText())
+        self.faceWatchTask = FaceWatchTask(interval=self.ui.watchInt.currentText(), notification=notification)
         self.faceWatchTask.started.connect(lambda: print("face watch task is started"))
         self.faceWatchTask.finished.connect(
             lambda: print("face watch task is finished")
@@ -109,6 +113,7 @@ class MainWindow(QMainWindow):
         self.ui.watchInt.currentTextChanged.connect(
             self.handle_interval_combobox_changed
         )
+
 
     def handle_interval_combobox_changed(self, text):
         print(text)
@@ -126,7 +131,7 @@ class MainWindow(QMainWindow):
 
     def refresh_data(self):
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
-        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addDays(-1))
+        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addSecs(-3600*2))
         self.update_data()
 
     def update_data(self, *args):

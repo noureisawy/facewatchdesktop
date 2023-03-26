@@ -3,20 +3,28 @@ import cv2
 from deepface import DeepFace
 from DB.Data import Data
 import time
+from PyQt5.QtWidgets import QMessageBox
 
 
 class FaceWatchTask(QThread):
     finished = pyqtSignal()
     started = pyqtSignal()
 
-    def __init__(self, interval):
+    def __init__(self, interval, notification):
         self.is_taking_image = True
         self.is_running = True
         self.interval = interval
+        self.notification = notification
         super().__init__()
 
     def take_photo(self):
-        cap = cv2.VideoCapture(1)
+        try:
+            cap = cv2.VideoCapture(1)
+        except Exception as e:
+            print(e)
+            QMessageBox.warning("Error", "Camera not found")
+            return
+        
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         ret, frame = cap.read()
@@ -44,6 +52,7 @@ class FaceWatchTask(QThread):
                 sub_file_name = "surprise"
             case "neutral":
                 sub_file_name = "neutral"
+        self.notification.show_notification(analysis[0]["dominant_emotion"])
         print(analysis[0])
         self.data.insert_emotion(analysis[0])
         filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
