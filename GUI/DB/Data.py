@@ -19,7 +19,7 @@ class Data:
         except sqlite3.Error as e:
             print(e)
             QMessageBox.critical(
-                self,
+                None,
                 "Error",
                 f"An error occurred while connecting to the database: {e}",
             )
@@ -47,7 +47,7 @@ class Data:
         except sqlite3.Error as e:
             print(e)
             QMessageBox.critical(
-                self,
+                None,
                 "Error",
                 f"An error occurred while creating the emotions table: {e}",
             )
@@ -63,7 +63,7 @@ class Data:
             return cursor.fetchall()
         except sqlite3.Error as e:
             QMessageBox.critical(
-                self, "Error", f"An error occurred while retrieving data: {e}"
+                None, "Error", f"An error occurred while retrieving data: {e}"
             )
     def delete_between(self, start_date, end_date):
         try:
@@ -76,8 +76,9 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
+            print(e)
             QMessageBox.critical(
-                self, "Error", f"An error occurred while deleting data: {e}"
+                None, "Error", f"An error occurred while deleting data: {e}"
             )
 
     def insert_emotion(self, emotion_json_data):
@@ -100,6 +101,7 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
+            print(e)
             QMessageBox.critical(
-                self, "Error", f"An error occurred while inserting data: {e}"
+                None, "Error", f"An error occurred while inserting data: {e}"
             )

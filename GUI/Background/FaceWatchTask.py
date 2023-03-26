@@ -10,14 +10,13 @@ class FaceWatchTask(QThread):
     started = pyqtSignal()
 
     def __init__(self, interval):
-        self.data = Data()
         self.is_taking_image = True
         self.is_running = True
         self.interval = interval
         super().__init__()
 
     def take_photo(self):
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         ret, frame = cap.read()
@@ -73,26 +72,33 @@ class FaceWatchTask(QThread):
 
     @pyqtSlot()
     def start_task(self):
-        self._is_running = True
+        self.is_running = True
         self.started.emit()
         self.start()
 
     @pyqtSlot()
     def stop_task(self):
-        self._is_running = False
+        self.is_running = False
 
     def run(self):  # sourcery skip: avoid-builtin-shadow
+        self.data = Data()
         while self.is_running:
             map = {
                 "": 1,
                 "15 sec": 15,
-                "15 min": 13 * 60,
+                "1 min": 1 * 60,
+                "2 min": 2 * 60,
+                "3 min": 3 * 60,
+                "5 min": 5 * 60,
+                "10 min": 10 * 60,
+                "15 min": 15 * 60,
                 "30 min": 30 * 60,
                 "1 h": 60 * 60,
             }
             if self.is_taking_image:
                 self.take_photo()
-            time.sleep(map.get(self.interval, 1))
-
+            timeInt = map.get(self.interval, 1)
+            time.sleep(timeInt)
+        self.data.conn.conn.close()
         self.finished.emit()
 

@@ -13,6 +13,7 @@ from Custom_Widgets.Widgets import *
 from EmotionGallery.ReadImages import ReadImages
 from Background.FaceWatchTask import FaceWatchTask
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         self.service_name = "FaceWatchService"
@@ -48,7 +49,7 @@ class MainWindow(QMainWindow):
         self.ui.closeRightMenu.clicked.connect(
             lambda: self.ui.rightMenuContainer.collapseMenu()
         )
-        
+
         # Data Analysis Page
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
         self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addDays(-1))
@@ -58,7 +59,9 @@ class MainWindow(QMainWindow):
         self.ui.dateTimeEnd.dateTimeChanged.connect(self.update_data)
         self.emotionData = EmotionData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
         self.ui.lineChart = LineChart(self.ui.lineChartPage, self.emotionData.data)
-        self.ui.scatterPlot = ScatterPlot(self.ui.scatterPlotPage, self.emotionData.data)
+        self.ui.scatterPlot = ScatterPlot(
+            self.ui.scatterPlotPage, self.emotionData.data
+        )
         self.ui.pieChart = PieChart(self.ui.pieChartPage, self.emotionData.data)
         self.ui.barChart = BarChart(self.ui.barChartPage, self.emotionData.data)
 
@@ -67,13 +70,23 @@ class MainWindow(QMainWindow):
 
         # Emotion Gallery Page
         self.readImage = ReadImages("neutral", self.ui.emotionListImages)
-        self.ui.neutralBtn.clicked.connect(lambda: self.refresh_emotional_gallery("neutral"))
-        self.ui.happyBtn.clicked.connect(lambda: self.refresh_emotional_gallery("happy"))
+        self.ui.neutralBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("neutral")
+        )
+        self.ui.happyBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("happy")
+        )
         self.ui.sadBtn.clicked.connect(lambda: self.refresh_emotional_gallery("sad"))
-        self.ui.angryBtn.clicked.connect(lambda: self.refresh_emotional_gallery("angry"))
+        self.ui.angryBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("angry")
+        )
         self.ui.fearBtn.clicked.connect(lambda: self.refresh_emotional_gallery("fear"))
-        self.ui.disgustBtn.clicked.connect(lambda: self.refresh_emotional_gallery("disgust"))
-        self.ui.surpriseBtn.clicked.connect(lambda: self.refresh_emotional_gallery("surprise"))
+        self.ui.disgustBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("disgust")
+        )
+        self.ui.surpriseBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("surprise")
+        )
 
         # action hide and show
         action_hide.triggered.connect(self.hide)
@@ -81,33 +94,36 @@ class MainWindow(QMainWindow):
 
         # Settings Page
         # run face watch background task
-        self.faceWatchTask = FaceWatchTask(interval = self.ui.watchInt.currentText)
-        self.faceWatchTask.started.connect(lambda : print("face watch task is started"))
-        self.faceWatchTask.finished.connect(lambda : print("face watch task is finished"))
-        self.faceWatchTask.start()
+        self.faceWatchTask = FaceWatchTask(interval=self.ui.watchInt.currentText())
+        self.faceWatchTask.started.connect(lambda: print("face watch task is started"))
+        self.faceWatchTask.finished.connect(
+            lambda: print("face watch task is finished")
+        )
+        self.faceWatchTask.start_task()
         self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
-        self.ui.watchMe.clicked.connect(self.handle_checkbox_watch_me_changed)
-        
+        self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
+
         # combobox changed
-        self.ui.watchInt.currentTextChanged.connect(self.handle_interval_combobox_changed)
+        self.ui.watchInt.currentTextChanged.connect(
+            self.handle_interval_combobox_changed
+        )
 
     def handle_interval_combobox_changed(self, text):
+        print(text)
         self.faceWatchTask.interval = text
 
-    def handle_checkbox_watch_me_changed(self,state):
-        if state:
-            if not self.faceWatchTask.is_running:
-               self.faceWatchTask.start_task()
-        elif self.faceWatchTask.is_running:
+    def handle_checkbox_watch_me_changed(self, checked):
+        if checked:
+            self.faceWatchTask.start_task()
+        else:
             self.faceWatchTask.stop_task()
 
- 
     def refresh_emotional_gallery(self, emotion):
         self.ui.emotionListImages.clear()
         self.readImage.refresh(emotion)
-    
+
     def refresh_data(self):
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
         self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addDays(-1))
@@ -126,10 +142,11 @@ class MainWindow(QMainWindow):
             == win32service.SERVICE_AUTO_START
         )
 
+
 def show_message():
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Information)
-    msg.setWindowIcon(QIcon(u"public/logo.png"))
+    msg.setWindowIcon(QIcon("public/logo.png"))
 
     msg.setWindowTitle(" Message Box")
     msg.setText("This is a message for you")
@@ -139,12 +156,14 @@ def show_message():
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     msg.exec_()
 
+
 def show_tray_message(tray):
     notificationTitle = "Notification Title"
     notificationMessage = "Notification Message"
     icon = QIcon("public/logo.png")
     duration = 3 * 1000
     tray.showMessage(notificationTitle, notificationMessage, icon, duration)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -155,27 +174,19 @@ if __name__ == "__main__":
             "Systray",
             "I couldn't detect any system tray on this system.",
         )
-        sys.exit(1) 
-    
+        sys.exit(1)
+
     app.setQuitOnLastWindowClosed(False)
-    
-    tray = QSystemTrayIcon(QIcon(u"public/logo.png"), app)
+
+    tray = QSystemTrayIcon(QIcon("public/logo.png"), app)
     tray.setToolTip("FaceWatch")
 
     # tray icon menu
     menu = QMenu()
-    action_message_box = QAction("Show")
-    action_message_box.triggered.connect(show_message)
-    menu.addAction(action_message_box)
-
-    action_tray_message = QAction("show a message from tray")
-    action_tray_message.triggered.connect(lambda: show_tray_message(tray))
-    menu.addAction(action_tray_message)
-
-    action_hide = QAction("Hide")
+    action_hide = QAction("Hide Window")
     menu.addAction(action_hide)
 
-    action_show = QAction("show")
+    action_show = QAction("Show Window")
     menu.addAction(action_show)
 
     action_exit = QAction("Exit")
@@ -184,6 +195,6 @@ if __name__ == "__main__":
 
     tray.setContextMenu(menu)
     tray.show()
-    
+
     window = MainWindow()
     sys.exit(app.exec_())
