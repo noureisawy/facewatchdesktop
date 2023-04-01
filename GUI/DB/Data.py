@@ -15,6 +15,8 @@ class Data:
 
             # Create a table to store emotions if it doesn't exist
             self.create_emotions_table()
+            # Create a table to store tiredness if it doesn't exist
+            self.create_tiredness_table()
 
         except sqlite3.Error as e:
             print(e)
@@ -24,10 +26,33 @@ class Data:
                 f"An error occurred while connecting to the database: {e}",
             )
 
+    def create_table(self, arg0):
+        cursor = self.conn.cursor()
+        cursor.execute(arg0)
+        self.conn.commit()
+
+    def create_tiredness_table(self):
+        try:
+            self.create_table(
+                """
+            CREATE TABLE IF NOT EXISTS tiredness (
+                id INTEGER PRIMARY KEY,
+                tiredness TEXT NOT NULL,
+                timestamp DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
+            )
+            """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the tiredness table: {e}",
+            )
+
     def create_emotions_table(self):
         try:
-            cursor = self.conn.cursor()
-            cursor.execute(
+            self.create_table(
                 """
             CREATE TABLE IF NOT EXISTS emotions (
                 id INTEGER PRIMARY KEY,
@@ -43,7 +68,6 @@ class Data:
             )
             """
             )
-            self.conn.commit()
         except sqlite3.Error as e:
             print(e)
             QMessageBox.critical(
@@ -51,34 +75,91 @@ class Data:
                 "Error",
                 f"An error occurred while creating the emotions table: {e}",
             )
-    def get_date_between(self, start_date, end_date):
+
+    def get_date_between(self, start_date, end_date, table_name="emotions"):
+        if table_name == "emotions":
+            try:
+                return self._extracted_from_get_date_between_4(
+                    """
+                SELECT * FROM emotions WHERE timestamp BETWEEN ? AND ?
+                """,
+                    start_date,
+                    end_date,
+                )
+            except sqlite3.Error as e:
+                print(e)
+                QMessageBox.critical(
+                    None, "Error", f"An error occurred while retrieving data: {e}"
+                )
+        elif table_name == "tiredness":
+            try:
+                return self._extracted_from_get_date_between_4(
+                    """
+                SELECT * FROM tiredness WHERE timestamp BETWEEN ? AND ?
+                """,
+                    start_date,
+                    end_date,
+                )
+            except sqlite3.Error as e:
+                print(e)
+                QMessageBox.critical(
+                    None, "Error", f"An error occurred while retrieving data: {e}"
+                )
+
+    def _extracted_from_get_date_between_4(self, arg0, start_date, end_date):
+        cursor = self.conn.cursor()
+        cursor.execute(arg0, (start_date, end_date))
+        return cursor.fetchall()
+
+    def delete_between(self, start_date, end_date, table_name="emotions"):
+        if table_name == "emotions":
+            try:
+                self._extracted_from_delete_between_4(
+                    """
+                DELETE FROM emotions WHERE timestamp BETWEEN ? AND ?
+                """,
+                    start_date,
+                    end_date,
+                )
+            except sqlite3.Error as e:
+                print(e)
+                QMessageBox.critical(
+                    None, "Error", f"An error occurred while deleting data: {e}"
+                )
+        elif table_name == "tiredness":
+            try:
+                self._extracted_from_delete_between_4(
+                    """
+                DELETE FROM tiredness WHERE timestamp BETWEEN ? AND ?
+                """,
+                    start_date,
+                    end_date,
+                )
+            except sqlite3.Error as e:
+                print(e)
+                QMessageBox.critical(
+                    None, "Error", f"An error occurred while deleting data: {e}"
+                )
+
+    def _extracted_from_delete_between_4(self, arg0, start_date, end_date):
+        cursor = self.conn.cursor()
+        cursor.execute(arg0, (start_date, end_date))
+        self.conn.commit()
+
+    def insert_tiredness(self, tiredness):
         try:
             cursor = self.conn.cursor()
             cursor.execute(
                 """
-            SELECT * FROM emotions WHERE timestamp BETWEEN ? AND ?
-            """,
-                (start_date, end_date),
-            )
-            return cursor.fetchall()
-        except sqlite3.Error as e:
-            QMessageBox.critical(
-                None, "Error", f"An error occurred while retrieving data: {e}"
-            )
-    def delete_between(self, start_date, end_date):
-        try:
-            cursor = self.conn.cursor()
-            cursor.execute(
-                """
-            DELETE FROM emotions WHERE timestamp BETWEEN ? AND ?
-            """,
-                (start_date, end_date),
+                INSERT INTO tiredness (tiredness) VALUES (?)
+                """,
+                (tiredness,),
             )
             self.conn.commit()
         except sqlite3.Error as e:
             print(e)
             QMessageBox.critical(
-                None, "Error", f"An error occurred while deleting data: {e}"
+                None, "Error", f"An error occurred while inserting data: {e}"
             )
 
     def insert_emotion(self, emotion_json_data):
