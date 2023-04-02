@@ -57,16 +57,20 @@ class MainWindow(QMainWindow):
         self.ui.dateTimeStart.setDateTime(
             QDateTime.currentDateTime().addSecs(-3600 * 24)
         )
+        
+        # Data Analysis selection compo box on change
+        self.ui.dataAnalysisSelection.currentIndexChanged.connect(self.handle_data_analysis_selection_change)
 
         # on change date time start and time end
         self.ui.dateTimeStart.dateTimeChanged.connect(self.update_data)
         self.ui.dateTimeEnd.dateTimeChanged.connect(self.update_data)
         self.emotionData = EmotionData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
         self.tirednessData = TirednessData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
-        self.ui.lineChart = LineChart(self.ui.lineChartPage, self.emotionData)
-        self.ui.scatterPlot = ScatterPlot(self.ui.scatterPlotPage, self.emotionData)
-        self.ui.pieChart = PieChart(self.ui.pieChartPage, self.emotionData)
-        self.ui.barChart = BarChart(self.ui.barChartPage, self.emotionData)
+        self.selectedData = self.emotionData
+        self.ui.lineChart = LineChart(self.ui.lineChartPage, self.selectedData)
+        self.ui.scatterPlot = ScatterPlot(self.ui.scatterPlotPage, self.selectedData)
+        self.ui.pieChart = PieChart(self.ui.pieChartPage, self.selectedData)
+        self.ui.barChart = BarChart(self.ui.barChartPage, self.selectedData)
 
         # Refresh data when refresh button clicked
         self.ui.refreshBtn.clicked.connect(self.refresh_data)
@@ -119,6 +123,13 @@ class MainWindow(QMainWindow):
             self.handle_interval_combobox_changed
         )
 
+    def handle_data_analysis_selection_change(self, index):
+        if index==0:
+            self.selectedData = self.emotionData
+        elif index==1:
+            self.selectedData = self.tirednessData
+        self.update_data()
+
     def handle_interval_combobox_changed(self, text):
         print(text)
         self.faceWatchTask.interval = text
@@ -142,10 +153,11 @@ class MainWindow(QMainWindow):
 
     def update_data(self, *args):
         self.emotionData.refresh_data(self.ui.dateTimeStart, self.ui.dateTimeEnd)
-        self.ui.lineChart.set_data(self.emotionData)
-        self.ui.scatterPlot.set_data(self.emotionData)
-        self.ui.pieChart.set_data(self.emotionData)
-        self.ui.barChart.set_data(self.emotionData)
+        self.tirednessData.refresh_data(self.ui.dateTimeStart, self.ui.dateTimeEnd)
+        self.ui.lineChart.set_data(self.selectedData)
+        self.ui.scatterPlot.set_data(self.selectedData)
+        self.ui.pieChart.set_data(self.selectedData)
+        self.ui.barChart.set_data(self.selectedData)
 
     def get_auto_start(self):
         return (

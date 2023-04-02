@@ -55,7 +55,8 @@ class TirednessData:
 
     # TODO Rename this here and in `get_scatter_plot_data` and `get_line_chart_data`
     def _extracted_from_get_line_chart_data_2(self):
-        x = [QDateTime.fromString(item[9], "yyyy-MM-dd HH:mm:ss") for item in self.data]
+        print(self.data)
+        x = [QDateTime.fromString(item[2], "yyyy-MM-dd HH:mm:ss") for item in self.data]
         y = [item[1] for item in self.data]
         tiredness = {
             "alert": 1,

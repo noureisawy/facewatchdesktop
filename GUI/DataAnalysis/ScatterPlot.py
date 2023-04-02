@@ -9,13 +9,6 @@ class ScatterPlot(QChartView):
         self.chart = QChart()
         self.chart.addSeries(self.series)
         self.chart.legend().hide()
-        axisX = QDateTimeAxis()
-        axisX.setFormat("dd/MM/yyyy hh:mm:ss")
-        axisX.setTitleText("Date")
-        axisY = QCategoryAxis()
-        axisY.setTitleText("Emotion")
-        self.chart.setAxisX(axisX, self.series)
-        self.chart.setAxisY(axisY, self.series)
         self.set_data(data)
         super().__init__(self.chart)
         self.setRenderHint(QPainter.Antialiasing)
@@ -26,6 +19,13 @@ class ScatterPlot(QChartView):
 
     def set_data(self, data):
         self.series.clear()
+        axisX = QDateTimeAxis()
+        axisX.setFormat("dd/MM/yyyy hh:mm:ss")
+        axisX.setTitleText("Date")
+        axisY = QCategoryAxis()
+        axisY.setTitleText(f"{data.type}")
+        self.chart.setAxisX(axisX, self.series)
+        self.chart.setAxisY(axisY, self.series)
         self.chart.setTitle(f'Scatter Plot Showing {data.type} Over Time')
         x, y_numeric, labels = data.get_scatter_plot_data()
         for i in range(len(x)):
@@ -43,7 +43,6 @@ class ScatterPlot(QChartView):
     
     def set_axisX_data(self, x):
         self.chart.axisX().setRange(x[0], x[-1])
-        self.chart.axisX().setTickCount(len(x))
         self.chart.axisX().setTickCount(len(x))
         self.chart.axisX().setFormat('dd HH:mm:ss')
         self.chart.axisX().setRange(x[0], x[-1])

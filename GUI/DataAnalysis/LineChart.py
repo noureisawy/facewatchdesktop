@@ -9,13 +9,6 @@ class LineChart(QChartView):
         self.series = QLineSeries()
         self.chart.addSeries(self.series)
         self.chart.legend().hide()
-        axisX = QDateTimeAxis()
-        axisX.setFormat("dd/MM/yyyy hh:mm:ss")
-        axisX.setTitleText("Date")
-        axisY = QCategoryAxis()
-        axisY.setTitleText("Emotion")
-        self.chart.setAxisX(axisX, self.series)
-        self.chart.setAxisY(axisY, self.series)
         self.chart.legend().hide()
         self.set_data(data)
         super().__init__(self.chart)
@@ -26,6 +19,13 @@ class LineChart(QChartView):
     
     def set_data(self, data):
         self.series.clear()
+        axisX = QDateTimeAxis()
+        axisX.setFormat("dd/MM/yyyy hh:mm:ss")
+        axisX.setTitleText("Date")
+        axisY = QCategoryAxis()
+        axisY.setTitleText(f"{data.type}")
+        self.chart.setAxisX(axisX, self.series)
+        self.chart.setAxisY(axisY, self.series)
         self.chart.setTitle(f'Line Chart Showing {data.type} Over Time')
         x, y_numeric, labels = data.get_line_chart_data()
         for i in range(len(x)):

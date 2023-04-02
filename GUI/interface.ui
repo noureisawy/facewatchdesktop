@@ -1796,7 +1796,7 @@ background-color:#2c313c;
                         </widget>
                        </item>
                        <item alignment="Qt::AlignRight">
-                        <widget class="QComboBox" name="analysisCompo">
+                        <widget class="QComboBox" name="dataAnalysisSelection">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                            <horstretch>0</horstretch>
