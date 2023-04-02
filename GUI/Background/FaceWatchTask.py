@@ -4,27 +4,32 @@ from deepface import DeepFace
 from DB.Data import Data
 import time
 from PyQt5.QtWidgets import QMessageBox
+import joblib
+from keras_facenet import FaceNet
 
 
 class FaceWatchTask(QThread):
     finished = pyqtSignal()
     started = pyqtSignal()
 
-    def __init__(self, interval, notification):
+    def __init__(self, notification=None, interval=""):
         self.is_taking_image = True
         self.is_running = True
         self.interval = interval
         self.notification = notification
+        self.knn = joblib.load("Models/knn_model.joblib")
+        self.facenet = FaceNet()
         super().__init__()
 
     def take_photo(self):
+        print("taking photo")
         try:
-            cap = cv2.VideoCapture(1)
+            cap = cv2.VideoCapture(0)
         except Exception as e:
             print(e)
             QMessageBox.warning("Error", "Camera not found")
             return
-        
+
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         ret, frame = cap.read()
@@ -37,6 +42,7 @@ class FaceWatchTask(QThread):
     def analyze_frame(self, frame):
         sub_file_name = "neutral"
         analysis = DeepFace.analyze(frame, actions=["emotion"])
+        print(analysis[0])
         match analysis[0]["dominant_emotion"]:
             case "angry":
                 sub_file_name = "angry"
@@ -52,8 +58,10 @@ class FaceWatchTask(QThread):
                 sub_file_name = "surprise"
             case "neutral":
                 sub_file_name = "neutral"
-        self.notification.show_notification(analysis[0]["dominant_emotion"])
-        print(analysis[0])
+        if self.notification:
+            self.notification.show_notification(analysis[0]["dominant_emotion"])
+        # handle tiredness detection
+        self.handle_tiredness_detection(frame, analysis)
         self.data.insert_emotion(analysis[0])
         filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         # draw rectangle to main image around the face
@@ -79,6 +87,23 @@ class FaceWatchTask(QThread):
         )
         cv2.imwrite(filename, frame)
 
+    def handle_tiredness_detection(self, frame, analysis):
+        # extract face from the frame
+        face_img = frame[
+            analysis[0]["region"]["y"] : analysis[0]["region"]["y"]
+            + analysis[0]["region"]["h"],
+            analysis[0]["region"]["x"] : analysis[0]["region"]["x"]
+            + analysis[0]["region"]["w"],
+        ]
+        # resize the face image to 160x160
+        face_img = cv2.resize(face_img, (160, 160))
+        embedding = self.facenet.embeddings([face_img])
+        classes = ['alert', 'non_vigilant', 'tired']
+        prediction = classes[self.knn.predict(embedding)[0]]
+        print(prediction)
+        self.data.insert_tiredness(prediction)
+
+    
     @pyqtSlot()
     def start_task(self):
         self.is_running = True
@@ -110,4 +135,3 @@ class FaceWatchTask(QThread):
             time.sleep(timeInt)
         self.data.conn.conn.close()
         self.finished.emit()
-

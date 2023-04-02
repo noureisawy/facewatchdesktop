@@ -13,6 +13,8 @@ from Custom_Widgets.Widgets import *
 from EmotionGallery.ReadImages import ReadImages
 from Background.FaceWatchTask import FaceWatchTask
 from Background.Notification import Notification
+from DataAnalysis.TirednessData import TirednessData
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,18 +54,19 @@ class MainWindow(QMainWindow):
 
         # Data Analysis Page
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
-        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addSecs(-3600 * 2))
+        self.ui.dateTimeStart.setDateTime(
+            QDateTime.currentDateTime().addSecs(-3600 * 24)
+        )
 
         # on change date time start and time end
         self.ui.dateTimeStart.dateTimeChanged.connect(self.update_data)
         self.ui.dateTimeEnd.dateTimeChanged.connect(self.update_data)
         self.emotionData = EmotionData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
-        self.ui.lineChart = LineChart(self.ui.lineChartPage, self.emotionData.data)
-        self.ui.scatterPlot = ScatterPlot(
-            self.ui.scatterPlotPage, self.emotionData.data
-        )
-        self.ui.pieChart = PieChart(self.ui.pieChartPage, self.emotionData.data)
-        self.ui.barChart = BarChart(self.ui.barChartPage, self.emotionData.data)
+        self.tirednessData = TirednessData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
+        self.ui.lineChart = LineChart(self.ui.lineChartPage, self.emotionData)
+        self.ui.scatterPlot = ScatterPlot(self.ui.scatterPlotPage, self.emotionData)
+        self.ui.pieChart = PieChart(self.ui.pieChartPage, self.emotionData)
+        self.ui.barChart = BarChart(self.ui.barChartPage, self.emotionData)
 
         # Refresh data when refresh button clicked
         self.ui.refreshBtn.clicked.connect(self.refresh_data)
@@ -98,7 +101,9 @@ class MainWindow(QMainWindow):
         # Settings Page
 
         # run face watch background task
-        self.faceWatchTask = FaceWatchTask(interval=self.ui.watchInt.currentText(), notification=notification)
+        self.faceWatchTask = FaceWatchTask(
+            interval=self.ui.watchInt.currentText(), notification=notification
+        )
         self.faceWatchTask.started.connect(lambda: print("face watch task is started"))
         self.faceWatchTask.finished.connect(
             lambda: print("face watch task is finished")
@@ -113,7 +118,6 @@ class MainWindow(QMainWindow):
         self.ui.watchInt.currentTextChanged.connect(
             self.handle_interval_combobox_changed
         )
-
 
     def handle_interval_combobox_changed(self, text):
         print(text)
@@ -131,15 +135,17 @@ class MainWindow(QMainWindow):
 
     def refresh_data(self):
         self.ui.dateTimeEnd.setDateTime(QDateTime.currentDateTime())
-        self.ui.dateTimeStart.setDateTime(QDateTime.currentDateTime().addSecs(-3600*2))
+        self.ui.dateTimeStart.setDateTime(
+            QDateTime.currentDateTime().addSecs(-3600 * 24)
+        )
         self.update_data()
 
     def update_data(self, *args):
         self.emotionData.refresh_data(self.ui.dateTimeStart, self.ui.dateTimeEnd)
-        self.ui.lineChart.update_data(self.emotionData.data)
-        self.ui.scatterPlot.update_data(self.emotionData.data)
-        self.ui.pieChart.update_data(self.emotionData.data)
-        self.ui.barChart.update_data(self.emotionData.data)
+        self.ui.lineChart.set_data(self.emotionData)
+        self.ui.scatterPlot.set_data(self.emotionData)
+        self.ui.pieChart.set_data(self.emotionData)
+        self.ui.barChart.set_data(self.emotionData)
 
     def get_auto_start(self):
         return (
