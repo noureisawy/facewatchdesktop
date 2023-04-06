@@ -1,12 +1,13 @@
 from PyQt5.QtGui import QIcon
 import random
 
+
 class Notification:
-    def show_tray_message(self, message):
-        notificationTitle = "Face Watch Emotion Tracking"
+    def show_tray_message(self, message, title="Face Watch Emotion Tracking"):
+        notificationTitle = title
         notificationMessage = message
         icon = QIcon("public/logo.png")
-        duration = 3 * 1000
+        duration = 5 * 1000
         self.tray.showMessage(notificationTitle, notificationMessage, icon, duration)
 
     def __init__(self, tray):
@@ -55,8 +56,26 @@ class Notification:
                 "Take a deep breath and try to relax.",
                 "It's okay to feel scared, but remember that you're not alone.",
             ],
+            "tired": [
+                "It's important to listen to your body and take breaks when you're feeling tired. Your health and well-being should always come first.",
+                "Don't be afraid to delegate tasks or ask for help if you're feeling too tired to handle everything on your own.",
+                "A good night's sleep can do wonders for your energy levels. Try to establish a consistent sleep routine to help combat feelings of tiredness throughout the day.",
+            ],
+            "non_vigilant": [
+                "Sometimes it can be hard to stay alert, especially when you're dealing with a lot of stress. Take a few deep breaths and try to recenter yourself.",
+                "If you're finding it difficult to focus, try breaking up your tasks into smaller, more manageable chunks. This can help you stay on track and avoid feeling overwhelmed.",
+                "Remember to take care of your physical health as well. Getting regular exercise and eating a balanced diet can help boost your energy levels and increase your overall alertness.",
+            ],
+            "alert": [
+                "You're doing great! Keep up the good work and stay focused on your goals.",
+                "Take advantage of your alertness by tackling some of your more challenging tasks while you're feeling energized and engaged.",
+                "Don't forget to take breaks and give yourself some downtime, even when you're feeling alert and productive. It's important to maintain a healthy work-life balance.",
+            ],
         }
         if emotion in emotions_notifications:
             self.show_tray_message(
-                random.choice(emotions_notifications[emotion])
+                random.choice(
+                    emotions_notifications[emotion],
+                ),
+                title=f'Face Watch Emotion Tracking "{emotion}"',
             )

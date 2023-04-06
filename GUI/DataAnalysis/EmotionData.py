@@ -14,7 +14,8 @@ class EmotionData:
         )
         self.dateTimeStartComponent = dateTimeStartComponent
         self.dateTimeEndComponent = dateTimeEndComponent
-        self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
+        self.data = None
+        # self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
     
     def refresh_data(self, dateTimeStartComponent, dateTimeEndComponent):
         self.dateTimeStart = dateTimeStartComponent.dateTime().toString(
@@ -48,12 +49,17 @@ class EmotionData:
             "surprise": 0,
             "neutral": 0,
         }
+        if self.data is None:
+            self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
         for item in self.data:
             emotions[item[1]] += 1
         return emotions
     
     # TODO Rename this here and in `get_scatter_plot_data` and `get_line_chart_data`
     def _extracted_from_get_line_chart_data_2(self):
+        if self.data is None:
+            self.data = self.conn.get_date_between(self.dateTimeStart, self.dateTimeEnd)
+
         x = [
             QDateTime.fromString(item[9], "yyyy-MM-dd HH:mm:ss")
             for item in self.data

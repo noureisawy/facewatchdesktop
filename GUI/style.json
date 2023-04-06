@@ -127,6 +127,15 @@
       ]
     },
     {
+      "Buttons": ["alertBtn", "non_vigilantBtn", "tiredBtn"],
+      "Style": [
+        {
+          "Active": "background-color: #2c313c;",
+          "NotActive": ""
+        }
+      ]
+    },
+    {
       "Buttons": [
         "surpriseBtn",
         "happyBtn",

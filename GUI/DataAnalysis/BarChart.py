@@ -14,7 +14,7 @@ class BarChart(QChartView):
     def __init__(self, parent_widget, data):
         self.series = QBarSeries()
         self.chart = QChart()
-        self.set_data(data)
+        # self.set_data(data)
         self.chart.addSeries(self.series)
         self.chart.legend().setVisible(True)
         self.chart.legend().setAlignment(Qt.AlignBottom)

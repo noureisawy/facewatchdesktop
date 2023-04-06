@@ -4,6 +4,7 @@ from datetime import datetime
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel, QWidget, QListWidgetItem, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
+import os
 directory = "C:/Users/UG/Desktop/research/FaceWatch/Images"
 
 class ReadImages:
@@ -24,6 +25,12 @@ class ReadImages:
         self.list_widget.clear()
         horizontal_layout = QHBoxLayout()
         outer_widget = QWidget()
+        # delete images if there are more than 50
+        if len(self.images) > 50:
+            for image in self.images[50:]:
+                os.remove(image)
+            self.images = self.images[:50]
+            
         for image in self.images:
             filename = image.split("/")[-1].split(".")[0]
             filename = datetime.strptime(filename, "%Y%m%d-%H%M%S")

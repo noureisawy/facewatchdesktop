@@ -98,12 +98,21 @@ class FaceWatchTask(QThread):
         # resize the face image to 160x160
         face_img = cv2.resize(face_img, (160, 160))
         embedding = self.facenet.embeddings([face_img])
-        classes = ['alert', 'non_vigilant', 'tired']
+        classes = ["alert", "non_vigilant", "tired"]
         prediction = classes[self.knn.predict(embedding)[0]]
         print(prediction)
+        self.notification.show_notification(prediction)
+        sub_file_name = "tired"
+        if prediction == "tired":
+            sub_file_name = "tired"
+        elif prediction == "alert":
+            sub_file_name = "alert"
+        elif prediction == "non_vigilant":
+            sub_file_name = "non_vigilant"
+        filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        cv2.imwrite(filename, frame)
         self.data.insert_tiredness(prediction)
 
-    
     @pyqtSlot()
     def start_task(self):
         self.is_running = True
@@ -133,5 +142,5 @@ class FaceWatchTask(QThread):
                 self.take_photo()
             timeInt = map.get(self.interval, 1)
             time.sleep(timeInt)
-        self.data.conn.conn.close()
+        self.data.conn.close()
         self.finished.emit()

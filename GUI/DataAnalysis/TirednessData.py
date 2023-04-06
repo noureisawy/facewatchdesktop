@@ -15,9 +15,10 @@ class TirednessData:
         )
         self.dateTimeStartComponent = dateTimeStartComponent
         self.dateTimeEndComponent = dateTimeEndComponent
-        self.data = self.conn.get_date_between(
-            self.dateTimeStart, self.dateTimeEnd, table_name="tiredness"
-        )
+        self.data = None
+        # self.data = self.conn.get_date_between(
+        #     self.dateTimeStart, self.dateTimeEnd, table_name="tiredness"
+        # )
 
     def refresh_data(self, dateTimeStartComponent, dateTimeEndComponent):
         self.dateTimeStart = dateTimeStartComponent.dateTime().toString(
@@ -49,13 +50,20 @@ class TirednessData:
             "non_vigilant": 0,
             "tired": 0,
         }
+        if self.data is None:
+            self.data = self.conn.get_date_between(
+                self.dateTimeStart, self.dateTimeEnd, table_name="tiredness"
+            )
         for item in self.data:
             tiredness[item[1]] += 1
         return tiredness
 
     # TODO Rename this here and in `get_scatter_plot_data` and `get_line_chart_data`
     def _extracted_from_get_line_chart_data_2(self):
-        print(self.data)
+        if self.data is None:
+            self.data = self.conn.get_date_between(
+                self.dateTimeStart, self.dateTimeEnd, table_name="tiredness"
+            )
         x = [QDateTime.fromString(item[2], "yyyy-MM-dd HH:mm:ss") for item in self.data]
         y = [item[1] for item in self.data]
         tiredness = {

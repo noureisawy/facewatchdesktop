@@ -57,9 +57,11 @@ class MainWindow(QMainWindow):
         self.ui.dateTimeStart.setDateTime(
             QDateTime.currentDateTime().addSecs(-3600 * 24)
         )
-        
+
         # Data Analysis selection compo box on change
-        self.ui.dataAnalysisSelection.currentIndexChanged.connect(self.handle_data_analysis_selection_change)
+        self.ui.dataAnalysisSelection.currentIndexChanged.connect(
+            self.handle_data_analysis_selection_change
+        )
 
         # on change date time start and time end
         self.ui.dateTimeStart.dateTimeChanged.connect(self.update_data)
@@ -76,6 +78,12 @@ class MainWindow(QMainWindow):
         self.ui.refreshBtn.clicked.connect(self.refresh_data)
 
         # Emotion Gallery Page
+
+        # hide alertness widget
+        self.ui.alertnessWid.hide()
+        self.ui.selectGalleryComp.currentIndexChanged.connect(
+            self.handle_select_gallery_change
+        )
         self.readImage = ReadImages("neutral", self.ui.emotionListImages)
         self.ui.neutralBtn.clicked.connect(
             lambda: self.refresh_emotional_gallery("neutral")
@@ -93,6 +101,15 @@ class MainWindow(QMainWindow):
         )
         self.ui.surpriseBtn.clicked.connect(
             lambda: self.refresh_emotional_gallery("surprise")
+        )
+        self.ui.tiredBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("tired")
+        )
+        self.ui.alertBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("alert")
+        )
+        self.ui.non_vigilantBtn.clicked.connect(
+            lambda: self.refresh_emotional_gallery("non_vigilant")
         )
 
         # action hide and show
@@ -123,10 +140,20 @@ class MainWindow(QMainWindow):
             self.handle_interval_combobox_changed
         )
 
+    def handle_select_gallery_change(self, index):
+        if index == 0:
+            self.refresh_emotional_gallery("neutral")
+            self.ui.alertnessWid.hide()
+            self.ui.emotionWid.show()
+        elif index == 1:
+            self.refresh_emotional_gallery("alert")
+            self.ui.emotionWid.hide()
+            self.ui.alertnessWid.show()
+
     def handle_data_analysis_selection_change(self, index):
-        if index==0:
+        if index == 0:
             self.selectedData = self.emotionData
-        elif index==1:
+        elif index == 1:
             self.selectedData = self.tirednessData
         self.update_data()
 

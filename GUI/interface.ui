@@ -77,13 +77,13 @@ padding: 10px;
 background-color:#2c313c;
 }
 
-#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #analysisCompo{
+#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #dataAnalysisSelection, #selectGalleryComp, #tiredBtn, #non_vigilantBtn, #alertBtn{
 background-color:#16191d;
 border-radius:15px;
 padding: 10px;
 }
 
-#neutralBtn:hover, #surpriseBtn:hover, #angryBtn:hover, #sadBtn:hover, #happyBtn:hover, #fearBtn:hover, #disgustBtn:hover{
+#neutralBtn:hover, #surpriseBtn:hover, #angryBtn:hover, #sadBtn:hover, #happyBtn:hover, #fearBtn:hover, #disgustBtn:hover, #tiredBtn:hover, #non_vigilantBtn:hover, #alertBtn:hover{
 background-color:#2c313c;
 }
 
@@ -1611,7 +1611,7 @@ background-color:#2c313c;
              <item>
               <widget class="QCustomStackedWidget" name="centerMenuPages">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="page_4">
                 <layout class="QHBoxLayout" name="horizontalLayout_15">
@@ -1635,8 +1635,8 @@ background-color:#2c313c;
                     </property>
                     <item alignment="Qt::AlignTop">
                      <widget class="QWidget" name="widget_12" native="true">
-                      <layout class="QVBoxLayout" name="verticalLayout_17">
-                       <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+                      <layout class="QHBoxLayout" name="horizontalLayout_4">
+                       <item>
                         <widget class="QLabel" name="label_9">
                          <property name="font">
                           <font>
@@ -1650,11 +1650,92 @@ background-color:#2c313c;
                          </property>
                         </widget>
                        </item>
+                       <item alignment="Qt::AlignLeft">
+                        <widget class="QComboBox" name="selectGalleryComp">
+                         <property name="font">
+                          <font>
+                           <pointsize>9</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <item>
+                          <property name="text">
+                           <string>Emotions</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Alertness</string>
+                          </property>
+                         </item>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="alertnessWid" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_5">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="alertBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-color:#2c313c;</string>
+                         </property>
+                         <property name="text">
+                          <string>alert</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="non_vigilantBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>non vigilant</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="tiredBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>tired</string>
+                         </property>
+                        </widget>
+                       </item>
                       </layout>
                      </widget>
                     </item>
                     <item alignment="Qt::AlignTop">
-                     <widget class="QWidget" name="widget_10" native="true">
+                     <widget class="QWidget" name="emotionWid" native="true">
                       <layout class="QHBoxLayout" name="horizontalLayout_25">
                        <property name="spacing">
                         <number>0</number>
@@ -1673,6 +1754,12 @@ background-color:#2c313c;
                        </property>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="neutralBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="styleSheet">
                           <string notr="true">background-color:#2c313c;</string>
                          </property>
@@ -1683,6 +1770,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="surpriseBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>surprise</string>
                          </property>
@@ -1690,6 +1783,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="angryBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>angry</string>
                          </property>
@@ -1697,6 +1796,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="sadBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>sad</string>
                          </property>
@@ -1704,6 +1809,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="happyBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>happy</string>
                          </property>
@@ -1711,6 +1822,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="fearBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>fear</string>
                          </property>
@@ -1718,6 +1835,12 @@ background-color:#2c313c;
                        </item>
                        <item alignment="Qt::AlignHCenter">
                         <widget class="QPushButton" name="disgustBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>disgust</string>
                          </property>
@@ -1795,7 +1918,7 @@ background-color:#2c313c;
                          </property>
                         </widget>
                        </item>
-                       <item alignment="Qt::AlignRight">
+                       <item alignment="Qt::AlignLeft">
                         <widget class="QComboBox" name="dataAnalysisSelection">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
