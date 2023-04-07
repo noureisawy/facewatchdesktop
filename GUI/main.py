@@ -112,9 +112,10 @@ class MainWindow(QMainWindow):
             lambda: self.refresh_emotional_gallery("non_vigilant")
         )
 
-        # action hide and show
-        action_hide.triggered.connect(self.hide)
-        action_show.triggered.connect(self.showNormal)
+        # tray icon
+        tray = QSystemTrayIcon(parent=self)
+        tray.setIcon(QIcon("public/logo.png"))
+        tray.show()
 
         # notification
         notification = Notification(tray)
@@ -129,8 +130,9 @@ class MainWindow(QMainWindow):
         self.faceWatchTask.finished.connect(
             lambda: print("face watch task is finished")
         )
-        self.faceWatchTask.start_task()
-        self.ui.watchMe.setChecked(True)
+        # TODO: fix this
+        #self.faceWatchTask.start_task()
+        #self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
         self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
@@ -218,33 +220,8 @@ def show_tray_message(tray):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    if not QSystemTrayIcon.isSystemTrayAvailable():
-        QMessageBox.critical(
-            None,
-            "Systray",
-            "I couldn't detect any system tray on this system.",
-        )
-        sys.exit(1)
-
-    app.setQuitOnLastWindowClosed(False)
-
-    tray = QSystemTrayIcon(QIcon("public/logo.png"), app)
-    tray.setToolTip("FaceWatch")
-
-    # tray icon menu
-    menu = QMenu()
-    action_hide = QAction("Hide Window")
-    menu.addAction(action_hide)
-
-    action_show = QAction("Show Window")
-    menu.addAction(action_show)
-
-    action_exit = QAction("Exit")
-    action_exit.triggered.connect(sys.exit)
-    menu.addAction(action_exit)
-
-    tray.setContextMenu(menu)
-    tray.show()
+#    app.setQuitOnLastWindowClosed(False)
 
     window = MainWindow()
+
     sys.exit(app.exec_())
