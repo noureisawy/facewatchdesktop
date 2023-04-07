@@ -6,7 +6,6 @@ import sys
 
 class SystemTray(QSystemTrayIcon):
     def __init__(self, parent=None):
-        super().__init__(self)
         if not QSystemTrayIcon.isSystemTrayAvailable():
             QMessageBox.critical(
                 None,
@@ -14,31 +13,37 @@ class SystemTray(QSystemTrayIcon):
                 "I couldn't detect any system tray on this system.",
             )
             sys.exit(1)
+        super().__init__(parent)
         self.parent = parent
         self.setIcon(QIcon("public/logo.png"))
+
+        # Create a widget with a combo box and a counter
+        widget = QWidget()
+        layout = QHBoxLayout(widget)
+        self.combo_box = QComboBox()
+        self.combo_box.addItems(['Option 1', 'Option 2', 'Option 3'])
+        layout.addWidget(self.combo_box)
+        self.counter_label = QLabel('0')
+        layout.addWidget(self.counter_label)
+
+
         self.setToolTip("FaceWatch")
-        self.activated.connect(self.onTrayIconActivated)
 
         menu = QMenu()
+        # add widget to the menu
+        self.action_hide = QAction("Hide Window")
+        menu.addAction(self.action_hide)
 
-        action_hide = QAction("Hide Window")
-        menu.addAction(action_hide)
-        action_hide.triggered.connect(self.parent.hide)
+        self.action_show = QAction("Show Window")
+        menu.addAction(self.action_show)
 
-        action_show = QAction("Show Window")
-        menu.addAction(action_show)
-        action_show.triggered.connect(self.parent.show)
+        self.action_exit = QAction("Exit")
+        menu.addAction(self.action_exit)
 
-        action_exit = QAction("Exit")
-        action_exit.triggered.connect(sys.exit)
-        menu.addAction(action_exit)
-        self.setContextMenu(self.menu)
+        self.action_exit.triggered.connect(sys.exit)
 
-    def onTrayIconActivated(self, reason):
-        if reason == QSystemTrayIcon.Trigger:
-            if self.parent.isVisible():
-                self.parent.hide()
-            else:
-                self.parent.show()
+        self.setContextMenu(menu)
+
+
 
 

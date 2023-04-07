@@ -14,7 +14,7 @@ from EmotionGallery.ReadImages import ReadImages
 from Background.FaceWatchTask import FaceWatchTask
 from Background.Notification import Notification
 from DataAnalysis.TirednessData import TirednessData
-
+from SystemTray import SystemTray
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -111,11 +111,6 @@ class MainWindow(QMainWindow):
         self.ui.non_vigilantBtn.clicked.connect(
             lambda: self.refresh_emotional_gallery("non_vigilant")
         )
-
-        # tray icon
-        tray = QSystemTrayIcon(parent=self)
-        tray.setIcon(QIcon("public/logo.png"))
-        tray.show()
 
         # notification
         notification = Notification(tray)
@@ -221,7 +216,11 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
 #    app.setQuitOnLastWindowClosed(False)
-
+    # tray icon
+    tray = SystemTray(parent=app)
+    tray.show()
     window = MainWindow()
+    tray.action_hide.triggered.connect(window.hide)
+    tray.action_show.triggered.connect(window.show)
 
     sys.exit(app.exec_())
