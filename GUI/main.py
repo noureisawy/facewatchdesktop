@@ -42,7 +42,6 @@ class MainWindow(QMainWindow):
         )
 
         # EXPAND Right MENU WIDGET SIZE
-        self.ui.notBtn.clicked.connect(lambda: self.ui.rightMenuContainer.expandMenu())
         self.ui.profileBtn.clicked.connect(
             lambda: self.ui.rightMenuContainer.expandMenu()
         )
@@ -183,44 +182,24 @@ class MainWindow(QMainWindow):
         self.ui.pieChart.set_data(self.selectedData)
         self.ui.barChart.set_data(self.selectedData)
 
-    def get_auto_start(self):
-        return (
-            win32serviceutil.QueryServiceConfig(self.service_name)[1]["start_type"]
-            == win32service.SERVICE_AUTO_START
-        )
-
-
-def show_message():
-    msg = QMessageBox()
-    msg.setIcon(QMessageBox.Information)
-    msg.setWindowIcon(QIcon("public/logo.png"))
-
-    msg.setWindowTitle(" Message Box")
-    msg.setText("This is a message for you")
-
-    msg.setInformativeText("Additional information can be put here")
-    msg.setDetailedText("The details are as follows:")
-    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    msg.exec_()
-
-
-def show_tray_message(tray):
-    notificationTitle = "Notification Title"
-    notificationMessage = "Notification Message"
-    icon = QIcon("public/logo.png")
-    duration = 3 * 1000
-    tray.showMessage(notificationTitle, notificationMessage, icon, duration)
+def handle_labeling_action():
+    window.show()
+    window.ui.rightMenuContainer.expandMenu()
+    window.ui.rightMenuPages.setCurrentIndex(0)
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
-#    app.setQuitOnLastWindowClosed(False)
+     
+    # TODO: fix this
+    # app.setQuitOnLastWindowClosed(False)
     # tray icon
+
     tray = SystemTray(parent=app)
     tray.show()
     window = MainWindow()
     tray.action_hide.triggered.connect(window.hide)
     tray.action_show.triggered.connect(window.show)
+    tray.labeling_action.triggered.connect(handle_labeling_action)
 
     sys.exit(app.exec_())

@@ -12,6 +12,9 @@ class Notification:
 
     def __init__(self, tray):
         self.tray = tray
+ 
+    def show_labeling_notification(self):
+        self.show_tray_message("Please label your emotions.", "Face Watch Emotion Labeling")
 
     def show_notification(self, emotion):
         emotions_notifications = {

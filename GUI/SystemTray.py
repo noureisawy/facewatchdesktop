@@ -16,23 +16,16 @@ class SystemTray(QSystemTrayIcon):
         super().__init__(parent)
         self.parent = parent
         self.setIcon(QIcon("public/logo.png"))
-
-        # Create a widget with a combo box and a counter
-        widget = QWidget()
-        layout = QHBoxLayout(widget)
-        self.combo_box = QComboBox()
-        self.combo_box.addItems(['Option 1', 'Option 2', 'Option 3'])
-        layout.addWidget(self.combo_box)
-        self.counter_label = QLabel('0')
-        layout.addWidget(self.counter_label)
-
+        
 
         self.setToolTip("FaceWatch")
 
         menu = QMenu()
-        # add widget to the menu
         self.action_hide = QAction("Hide Window")
         menu.addAction(self.action_hide)
+
+        self.labeling_action = QAction("Labeling Emotions")
+        menu.addAction(self.labeling_action)
 
         self.action_show = QAction("Show Window")
         menu.addAction(self.action_show)

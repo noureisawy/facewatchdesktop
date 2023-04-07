@@ -104,7 +104,7 @@
       ],
       "expandedSize": [
         {
-          "width": 200,
+          "width": 400,
           "height": "auto"
         }
       ],
@@ -172,19 +172,6 @@
     }
   ],
   "QStackedWidget": [
-    {
-      "name": "rightMenuPages",
-      "navigation": [
-        {
-          "navigationButtons": [
-            {
-              "profileBtn": "page_8",
-              "notBtn": "page_9"
-            }
-          ]
-        }
-      ]
-    },
     {
       "name": "dataAnalysisPages",
       "navigation": [
