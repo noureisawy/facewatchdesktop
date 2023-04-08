@@ -136,6 +136,8 @@ class MainWindow(QMainWindow):
             self.handle_interval_combobox_changed
         )
 
+        
+
     def handle_select_gallery_change(self, index):
         if index == 0:
             self.refresh_emotional_gallery("neutral")

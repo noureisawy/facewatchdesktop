@@ -124,7 +124,7 @@ class FaceWatchTask(QThread):
         self.is_running = False
 
     def run(self):  # sourcery skip: avoid-builtin-shadow
-        self.data = Data()
+        self.data = Data.get_instant()
         while self.is_running:
             map = {
                 "": 1,

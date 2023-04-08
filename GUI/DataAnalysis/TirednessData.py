@@ -6,7 +6,7 @@ from PyQt5.QtCore import QDateTime
 class TirednessData:
     def __init__(self, dateTimeStartComponent, dateTimeEndComponent):
         self.type = "Tiredness"
-        self.conn = Data()
+        self.conn = Data.get_instant()
         self.dateTimeStart = dateTimeStartComponent.dateTime().toString(
             "yyyy-MM-dd hh:mm:ss"
         )

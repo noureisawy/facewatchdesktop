@@ -1,7 +1,7 @@
 from Data import Data
 
 
-data = Data()
+data = Data.get_instant()
 # insert some emotional data
 data.insert_tiredness(
     "alert"

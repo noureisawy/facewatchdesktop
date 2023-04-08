@@ -5,7 +5,7 @@ from PyQt5.QtCore import QDateTime
 class EmotionData:
     def __init__(self,dateTimeStartComponent, dateTimeEndComponent):
         self.type = "Emotions"
-        self.conn = Data()
+        self.conn = Data.get_instant()
         self.dateTimeStart = dateTimeStartComponent.dateTime().toString(
             "yyyy-MM-dd hh:mm:ss"
         )

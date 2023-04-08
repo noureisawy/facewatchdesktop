@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1371, 644)
+        MainWindow.resize(1405, 644)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -1082,7 +1082,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 269, 894))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, -372, 269, 894))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
@@ -1364,7 +1364,7 @@ class Ui_MainWindow(object):
         self.comboBox_2.setItemText(2, _translate("MainWindow", "tired"))
         self.label_27.setText(_translate("MainWindow", "Medical history"))
         self.label_28.setText(_translate("MainWindow", "Current symptomes and concerns"))
-        self.label_29.setText(_translate("MainWindow", "Mental health"))
+        self.label_29.setText(_translate("MainWindow", "Current Mental Health Situation"))
 from Custom_Widgets.Widgets import QCustomSlideMenu, QCustomStackedWidget
 import resources_rc
 
