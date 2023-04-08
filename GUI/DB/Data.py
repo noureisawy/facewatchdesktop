@@ -303,11 +303,6 @@ class Data:
             self.conn.commit()
         except sqlite3.Error as e:
             print(e)
-            QMessageBox.critical(
-                None,
-                "Error",
-                f"An error occurred while inserting user information: {e}",
-            )
 
     def insert_emotion(self, emotion_json_data):
         try:

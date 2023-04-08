@@ -1,8 +1,6 @@
 import sys
 from PySide2 import *
 from ui_interface import *
-import win32serviceutil
-import win32service
 from PyQt5.QtCore import QDateTime
 from DataAnalysis.LineChart import LineChart
 from DataAnalysis.ScatterPlot import ScatterPlot
@@ -15,6 +13,7 @@ from Background.FaceWatchTask import FaceWatchTask
 from Background.Notification import Notification
 from DataAnalysis.TirednessData import TirednessData
 from SystemTray import SystemTray
+from user.User import User
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -135,6 +134,9 @@ class MainWindow(QMainWindow):
         self.ui.watchInt.currentTextChanged.connect(
             self.handle_interval_combobox_changed
         )
+
+        # Profile Page
+        self.user = User(self)
 
         
 
