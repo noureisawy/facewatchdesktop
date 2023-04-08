@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 db_path = "C:/Users/UG/Desktop/research/FaceWatch/GUI/DB/emotions.db"
 
+from datetime import datetime
 
 class Data:
     __data = None
@@ -19,86 +20,6 @@ class Data:
         self.conn = None
         self.create_database_and_connect()
 
-    def create_labeling_emotions_table(self):
-        # create a table to store labeling emotions associated with user face images
-        try:
-            self.create_table(
-                """
-                CREATE TABLE IF NOT EXISTS labeling_emotions (
-                    id INTEGER PRIMARY KEY,
-                    emotion TEXT NOT NULL,
-                    image_path TEXT NOT NULL,
-                )
-                    """
-            )
-        except sqlite3.Error as e:
-            print(e)
-            QMessageBox.critical(
-                None,
-                "Error",
-                f"An error occurred while creating the labeling emotions table: {e}",
-            )
-
-    def create_labeling_tiredness_table(self):
-        # create a table to store labeling tiredness associated with user face images
-        try:
-            self.create_table(
-                """
-                CREATE TABLE IF NOT EXISTS labeling_tiredness (
-                    id INTEGER PRIMARY KEY,
-                    tiredness TEXT NOT NULL,
-                    image_path TEXT NOT NULL,
-                )
-                    """
-            )
-        except sqlite3.Error as e:
-            print(e)
-            QMessageBox.critical(
-                None,
-                "Error",
-                f"An error occurred while creating the labeling tiredness table: {e}",
-            )
-
-    def create_labeling_mental_health(self):
-        # create a table to store labeling mental health associated with user face images
-        try:
-            self.create_table(
-                """
-                CREATE TABLE IF NOT EXISTS labeling_mental_health (
-                    id INTEGER PRIMARY KEY,
-                    mental_health TEXT NOT NULL,
-                    image_path TEXT NOT NULL,
-                )
-                    """
-            )
-        except sqlite3.Error as e:
-            print(e)
-            QMessageBox.critical(
-                None,
-                "Error",
-                f"An error occurred while creating the labeling mental health table: {e}",
-            )
-
-    def create_labeling_symptoms_concerns(self):
-        # create a table to store labeling symptoms and concerns associated with user face images
-        try:
-            self.create_table(
-                """
-                CREATE TABLE IF NOT EXISTS labeling_symptoms_concerns (
-                    id INTEGER PRIMARY KEY,
-                    symptoms_concerns TEXT NOT NULL,
-                    image_path TEXT NOT NULL,
-                )
-                    """
-            )
-        except sqlite3.Error as e:
-            print(e)
-            QMessageBox.critical(
-                None,
-                "Error",
-                f"An error occurred while creating the labeling symptoms and concerns table: {e}",
-            )
-
     def create_database_and_connect(self):
         try:
             # Connect to the database or create it if it doesn't exist
@@ -110,6 +31,15 @@ class Data:
             self.create_tiredness_table()
             # Create a table to user information if it doesn't exist
             self.create_user_information_table()
+            # Create a table to store labeling emotions associated with user face images
+            self.create_labeling_emotions_table()
+            # Create a table to store labeling tiredness associated with user face images
+            self.create_labeling_tiredness_table()
+            # Create a table to store labeling mental health associated with user face images
+            self.create_labeling_mental_health()
+            # Create a table to store labeling symptoms and concerns associated with user face images
+            self.create_labeling_symptoms_concerns()
+
 
         except sqlite3.Error as e:
             print(e)
@@ -117,6 +47,162 @@ class Data:
                 None,
                 "Error",
                 f"An error occurred while connecting to the database: {e}",
+            )
+
+
+    def create_labeling_emotions_table(self):
+        # create a table to store labeling emotions associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_emotions (
+                    id INTEGER PRIMARY KEY,
+                    emotion TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling emotions table: {e}",
+            )
+    
+    def insert_into_emotion_labeling(self, emotion, image_path):
+        # insert into labeling emotions table
+        try:
+            self.insert_into_table(
+                """
+                INSERT INTO labeling_emotions(emotion, image_path, created_at)
+                VALUES(?, ?)
+                """,
+                (emotion, image_path, datetime.now()),
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the labeling emotions table: {e}",
+            )
+
+    def create_labeling_tiredness_table(self):
+        # create a table to store labeling tiredness associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_tiredness (
+                    id INTEGER PRIMARY KEY,
+                    tiredness TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling tiredness table: {e}",
+            )
+    def insert_into_tiredness_labeling(self, tiredness, image_path):
+        # insert into labeling tiredness table
+        try:
+            self.insert_into_table(
+                """
+                INSERT INTO labeling_tiredness(tiredness, image_path, created_at)
+                VALUES(?, ?)
+                """,
+                (tiredness, image_path, datetime.now()),
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the labeling tiredness table: {e}",
+            )
+
+    def create_labeling_mental_health(self):
+        # create a table to store labeling mental health associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_mental_health (
+                    id INTEGER PRIMARY KEY,
+                    mental_health TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling mental health table: {e}",
+            )
+    
+    def insert_into_mental_health_labeling(self, mental_health, image_path):
+        # insert into labeling mental health table
+        try:
+            self.insert_into_table(
+                """
+                INSERT INTO labeling_mental_health(mental_health, image_path, created_at)
+                VALUES(?, ?)
+                """,
+                (mental_health, image_path, datetime.now()),
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the labeling mental health table: {e}",
+            )
+
+    def create_labeling_symptoms_concerns(self):
+        # create a table to store labeling symptoms and concerns associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_symptoms_concerns (
+                    id INTEGER PRIMARY KEY,
+                    symptoms_concerns TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling symptoms and concerns table: {e}",
+            )
+    
+    def insert_into_symptoms_concerns_labeling(self, symptoms_concerns, image_path):
+        # insert into labeling symptoms and concerns table
+        try:
+            self.insert_into_table(
+                """
+                INSERT INTO labeling_symptoms_concerns(symptoms_concerns, image_path, created_at)
+                VALUES(?, ?)
+                """,
+                (symptoms_concerns, image_path, datetime.now()),
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the labeling symptoms and concerns table: {e}",
             )
 
     def create_table(self, arg0):
