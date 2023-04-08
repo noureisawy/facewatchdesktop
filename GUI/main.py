@@ -15,6 +15,7 @@ from DataAnalysis.TirednessData import TirednessData
 from SystemTray import SystemTray
 from user.User import User
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         self.service_name = "FaceWatchService"
@@ -124,8 +125,8 @@ class MainWindow(QMainWindow):
             lambda: print("face watch task is finished")
         )
         # TODO: fix this
-        #self.faceWatchTask.start_task()
-        #self.ui.watchMe.setChecked(True)
+        # self.faceWatchTask.start_task()
+        # self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
         self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
@@ -137,8 +138,6 @@ class MainWindow(QMainWindow):
 
         # Profile Page
         self.user = User(self)
-
-        
 
     def handle_select_gallery_change(self, index):
         if index == 0:
@@ -186,6 +185,7 @@ class MainWindow(QMainWindow):
         self.ui.pieChart.set_data(self.selectedData)
         self.ui.barChart.set_data(self.selectedData)
 
+
 def handle_labeling_action():
     window.show()
     window.ui.rightMenuContainer.expandMenu()
@@ -194,7 +194,7 @@ def handle_labeling_action():
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-     
+
     # TODO: fix this
     # app.setQuitOnLastWindowClosed(False)
     # tray icon

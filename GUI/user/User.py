@@ -1,5 +1,6 @@
 from DB.Data import Data
 from PyQt5.QtWidgets import QMessageBox
+from datetime import datetime
 
 
 class User:
@@ -31,6 +32,9 @@ class User:
         self.current_mental_health = None
         self.medical_history = None
         self.current_symptoms_concerns = None
+        self.last_update_current_emotion = None
+        self.last_update_alertness_state = None
+        self.last_update_current_mental_health = None
         self.data = Data.get_instant()
         self.get_information()
 
@@ -38,7 +42,6 @@ class User:
         row = self.data.get_user_information()
         print("row: ", row)
         row = row[0]
-
         self.birth_year = row[1]
         self.window.ui.birthYear.setText(
             str(self.birth_year) if self.birth_year else ""
@@ -132,6 +135,7 @@ class User:
         return self.gender
 
     def set_current_emotion(self, current_emotion):
+        self.last_update_current_emotion = datetime.now()
         self.current_emotion = current_emotion
         self.data.update_user_information(current_emotion=current_emotion)
 
@@ -140,6 +144,7 @@ class User:
 
     def set_alertness_state(self, alertness_state):
         self.alertness_state = alertness_state
+        self.last_update_alertness_state = datetime.now()
         self.data.update_user_information(alertness_state=alertness_state)
 
     def get_alertness_state(self):
@@ -147,6 +152,7 @@ class User:
 
     def set_current_mental_health(self, current_mental_health):
         self.current_mental_health = current_mental_health
+        self.last_update_current_mental_health = datetime.now()
         self.data.update_user_information(current_mental_health=current_mental_health)
 
     def get_current_mental_health(self):

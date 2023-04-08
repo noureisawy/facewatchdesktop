@@ -6,18 +6,98 @@ db_path = "C:/Users/UG/Desktop/research/FaceWatch/GUI/DB/emotions.db"
 
 class Data:
     __data = None
-    
+
     @classmethod
     def get_instant(cls):
         if cls.__data is None:
             cls.__data = Data()
         return cls.__data
 
-    def __init__(self):
+    def __init__(self):  # sourcery skip: raise-specific-error
         if Data.__data is not None:
             raise Exception("This class is a singleton!")
         self.conn = None
         self.create_database_and_connect()
+
+    def create_labeling_emotions_table(self):
+        # create a table to store labeling emotions associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_emotions (
+                    id INTEGER PRIMARY KEY,
+                    emotion TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling emotions table: {e}",
+            )
+
+    def create_labeling_tiredness_table(self):
+        # create a table to store labeling tiredness associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_tiredness (
+                    id INTEGER PRIMARY KEY,
+                    tiredness TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling tiredness table: {e}",
+            )
+
+    def create_labeling_mental_health(self):
+        # create a table to store labeling mental health associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_mental_health (
+                    id INTEGER PRIMARY KEY,
+                    mental_health TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling mental health table: {e}",
+            )
+
+    def create_labeling_symptoms_concerns(self):
+        # create a table to store labeling symptoms and concerns associated with user face images
+        try:
+            self.create_table(
+                """
+                CREATE TABLE IF NOT EXISTS labeling_symptoms_concerns (
+                    id INTEGER PRIMARY KEY,
+                    symptoms_concerns TEXT NOT NULL,
+                    image_path TEXT NOT NULL,
+                )
+                    """
+            )
+        except sqlite3.Error as e:
+            print(e)
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the labeling symptoms and concerns table: {e}",
+            )
 
     def create_database_and_connect(self):
         try:
