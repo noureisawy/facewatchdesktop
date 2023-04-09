@@ -1,7 +1,7 @@
 from DB.Data import Data
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
-
+import time
 
 class User:
     __gender = {
@@ -135,7 +135,7 @@ class User:
         return self.gender
 
     def set_current_emotion(self, current_emotion):
-        self.last_update_current_emotion = datetime.now()
+        self.last_update_current_emotion = time.strftime("%Y%m%d-%H%M%S")
         self.current_emotion = current_emotion
         self.data.update_user_information(current_emotion=current_emotion)
 
@@ -144,7 +144,7 @@ class User:
 
     def set_alertness_state(self, alertness_state):
         self.alertness_state = alertness_state
-        self.last_update_alertness_state = datetime.now()
+        self.last_update_alertness_state = time.strftime("%Y%m%d-%H%M%S")
         self.data.update_user_information(alertness_state=alertness_state)
 
     def get_alertness_state(self):
@@ -152,7 +152,7 @@ class User:
 
     def set_current_mental_health(self, current_mental_health):
         self.current_mental_health = current_mental_health
-        self.last_update_current_mental_health = datetime.now()
+        self.last_update_current_mental_health = time.strftime("%Y%m%d-%H%M%S")
         self.data.update_user_information(current_mental_health=current_mental_health)
 
     def get_current_mental_health(self):

@@ -18,7 +18,6 @@ class LabelingData:
         self.data = Data.get_instant()
         self.label = None
         self.lower_widget = lower_widget
-        self.set_label("emotions")
         self.image_container = image_container
         self.read_labeled_image = ReadLabeledImage(self.image_container)
 
@@ -40,10 +39,10 @@ class LabelingData:
             parent_widget = QWidget()
             data_row = Ui_Form()
             data_row.setupUi(parent_widget)
-            data_row.label.setText(row[0])
+            data_row.label.setText(row[2])
             data_row.label_2.setText(row[1])
             data_row.showImage.clicked.connect(
-                functools.partial(self.show_image, created_at=row[0])
+                functools.partial(self.show_image, created_at=row[2])
             )
             data_row.editLabel.clicked.connect(
                 functools.partial(self.edit_label, data_row)
@@ -65,6 +64,7 @@ class LabelingData:
             "mental_health": self.data.update_mental_health_label,
             "symptoms": self.data.update_symptoms_concerns_label,
         }
+        print(self.label)
         update = data_update[self.label]
         # Create a dialog window
         dialog = QDialog()
@@ -86,6 +86,8 @@ class LabelingData:
         # Show the dialog window and wait for the user to close it
         if dialog.exec_() == QDialog.Accepted:
             # Update the label text in the main window
+            print(line_edit.text())
+            print(data_row.label.text())
             data_row.label_2.setText(line_edit.text())
-            update(data_row.label.text(), line_edit.text())
+            update(line_edit.text(),data_row.label.text())
             

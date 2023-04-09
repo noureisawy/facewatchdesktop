@@ -5,6 +5,7 @@ db_path = "C:/Users/UG/Desktop/research/FaceWatch/GUI/DB/emotions.db"
 
 from datetime import datetime
 
+
 class Data:
     __data = None
 
@@ -14,9 +15,7 @@ class Data:
             cls.__data = Data()
         return cls.__data
 
-    def __init__(self):  # sourcery skip: raise-specific-error
-        if Data.__data is not None:
-            raise Exception("This class is a singleton!")
+    def __init__(self):
         self.conn = None
         self.create_database_and_connect()
 
@@ -40,7 +39,6 @@ class Data:
             # Create a table to store labeling symptoms and concerns associated with user face images
             self.create_labeling_symptoms_concerns()
 
-
         except sqlite3.Error as e:
             print(f"An error occurred while connecting to the database: {e}")
             QMessageBox.critical(
@@ -48,7 +46,6 @@ class Data:
                 "Error",
                 f"An error occurred while connecting to the database: {e}",
             )
-
 
     def create_labeling_emotions_table(self):
         # create a table to store labeling emotions associated with user face images
@@ -70,21 +67,23 @@ class Data:
                 "Error",
                 f"An error occurred while creating the labeling emotions table: {e}",
             )
-    
-    def insert_into_emotion_labeling(self, emotion, image_path):
+
+    def insert_emotion_labeling(self, emotion, image_path):
         # insert into labeling emotions table
         try:
             cursor = self.conn.cursor()
             cursor.execute(
                 """
                 INSERT INTO labeling_emotions(emotion, image_path, created_at)
-                VALUES(?, ?)
+                VALUES(?, ?, ?)
                 """,
                 (emotion, image_path, datetime.now()),
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(f"An error occurred while inserting into the labeling emotions table: {e}")
+            print(
+                f"An error occurred while inserting into the labeling emotions table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
@@ -95,7 +94,7 @@ class Data:
         # get all emotions labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_emotions")
+            cursor.execute("SELECT * FROM labeling_emotions ORDER BY created_at DESC")
             return cursor.fetchall()
         except sqlite3.Error as e:
             print(f"An error occurred while getting all emotions labeling: {e}")
@@ -104,7 +103,7 @@ class Data:
                 "Error",
                 f"An error occurred while getting all emotions labeling: {e}",
             )
-    
+
     def update_emotion_label(self, emotion, created_at):
         # update emotion labeling
         try:
@@ -113,7 +112,7 @@ class Data:
                 """
                 UPDATE labeling_emotions
                 SET emotion = ?
-                WHERE created_at = ?
+                WHERE image_path = ?
                 """,
                 (emotion, created_at),
             )
@@ -126,7 +125,6 @@ class Data:
                 f"An error occurred while updating emotion labeling: {e}",
             )
 
-    
     def create_labeling_tiredness_table(self):
         # create a table to store labeling tiredness associated with user face images
         try:
@@ -147,31 +145,34 @@ class Data:
                 "Error",
                 f"An error occurred while creating the labeling tiredness table: {e}",
             )
-    def insert_into_tiredness_labeling(self, tiredness, image_path):
+
+    def insert_tiredness_labeling(self, tiredness, image_path):
         # insert into labeling tiredness table
         try:
             cursor = self.conn.cursor()
             cursor.execute(
                 """
                 INSERT INTO labeling_tiredness(tiredness, image_path, created_at)
-                VALUES(?, ?)
+                VALUES(?, ?, ?)
                 """,
                 (tiredness, image_path, datetime.now()),
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print( f"An error occurred while inserting into the labeling tiredness table: {e}")
+            print(
+                f"An error occurred while inserting into the labeling tiredness table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling tiredness table: {e}",
             )
-    
+
     def get_all_tiredness_labeling(self):
         # get all tiredness labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_tiredness")
+            cursor.execute("SELECT * FROM labeling_tiredness ORDER BY created_at DESC")
             return cursor.fetchall()
         except sqlite3.Error as e:
             print(f"An error occurred while getting all tiredness labeling: {e}")
@@ -180,7 +181,7 @@ class Data:
                 "Error",
                 f"An error occurred while getting all tiredness labeling: {e}",
             )
-    
+
     def update_tiredness_label(self, tiredness, created_at):
         # update tiredness labeling
         try:
@@ -189,7 +190,7 @@ class Data:
                 """
                 UPDATE labeling_tiredness
                 SET tiredness = ?
-                WHERE created_at = ?
+                WHERE image_path = ?
                 """,
                 (tiredness, created_at),
             )
@@ -201,7 +202,6 @@ class Data:
                 "Error",
                 f"An error occurred while updating tiredness labeling: {e}",
             )
-    
 
     def create_labeling_mental_health(self):
         # create a table to store labeling mental health associated with user face images
@@ -217,38 +217,42 @@ class Data:
                     """
             )
         except sqlite3.Error as e:
-            print(f"An error occurred while creating the labeling mental health table: {e}")
+            print(
+                f"An error occurred while creating the labeling mental health table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while creating the labeling mental health table: {e}",
             )
 
-    def insert_into_mental_health_labeling(self, mental_health, image_path):
+    def insert_mental_health_labeling(self, mental_health, image_path):
         # insert into labeling mental health table
         try:
             cursor = self.conn.cursor()
             cursor.execute(
                 """
                 INSERT INTO labeling_mental_health(mental_health, image_path, created_at)
-                VALUES(?, ?)
+                VALUES(?, ?, ?)
                 """,
                 (mental_health, image_path, datetime.now()),
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(f"An error occurred while inserting into the labeling mental health table: {e}")
+            print(
+                f"An error occurred while inserting into the labeling mental health table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling mental health table: {e}",
             )
-    
+
     def get_all_mental_health_labeling(self):
         # get all mental health labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_mental_health")
+            cursor.execute("SELECT * FROM labeling_mental_health ORDER BY created_at DESC")
             return cursor.fetchall()
         except sqlite3.Error as e:
             print(f"An error occurred while getting all mental health labeling: {e}")
@@ -257,7 +261,7 @@ class Data:
                 "Error",
                 f"An error occurred while getting all mental health labeling: {e}",
             )
-    
+
     def update_mental_health_label(self, mental_health, created_at):
         # update mental health labeling
         try:
@@ -266,7 +270,7 @@ class Data:
                 """
                 UPDATE labeling_mental_health
                 SET mental_health = ?
-                WHERE created_at = ?
+                WHERE image_path = ?
                 """,
                 (mental_health, created_at),
             )
@@ -278,7 +282,6 @@ class Data:
                 "Error",
                 f"An error occurred while updating mental health labeling: {e}",
             )
-
 
     def create_labeling_symptoms_concerns(self):
         # create a table to store labeling symptoms and concerns associated with user face images
@@ -294,47 +297,53 @@ class Data:
                     """
             )
         except sqlite3.Error as e:
-            print(f"An error occurred while creating the labeling symptoms and concerns table: {e}")
+            print(
+                f"An error occurred while creating the labeling symptoms and concerns table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while creating the labeling symptoms and concerns table: {e}",
             )
-    
-    def insert_into_symptoms_concerns_labeling(self, symptoms_concerns, image_path):
+
+    def insert_symptoms_concerns_labeling(self, symptoms_concerns, image_path):
         # insert into labeling symptoms and concerns table
         try:
             cursor = self.conn.cursor()
             cursor.execute(
                 """
                 INSERT INTO labeling_symptoms_concerns(symptoms_concerns, image_path, created_at)
-                VALUES(?, ?)
+                VALUES(?, ?, ?)
                 """,
                 (symptoms_concerns, image_path, datetime.now()),
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(f"An error occurred while inserting into the labeling symptoms and concerns table: {e}")
+            print(
+                f"An error occurred while inserting into the labeling symptoms and concerns table: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling symptoms and concerns table: {e}",
             )
-    
+
     def get_all_symptoms_concerns_labeling(self):
         # get all symptoms and concerns labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_symptoms_concerns")
+            cursor.execute("SELECT * FROM labeling_symptoms_concerns ORDER BY created_at DESC")
             return cursor.fetchall()
         except sqlite3.Error as e:
-            print(f"An error occurred while getting all symptoms and concerns labeling: {e}")
+            print(
+                f"An error occurred while getting all symptoms and concerns labeling: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while getting all symptoms and concerns labeling: {e}",
             )
-    
+
     def update_symptoms_concerns_label(self, symptoms_concerns, created_at):
         # update symptoms and concerns labeling
         try:
@@ -343,13 +352,15 @@ class Data:
                 """
                 UPDATE labeling_symptoms_concerns
                 SET symptoms_concerns = ?
-                WHERE created_at = ?
+                WHERE image_path = ?
                 """,
                 (symptoms_concerns, created_at),
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(f"An error occurred while updating symptoms and concerns labeling: {e}")
+            print(
+                f"An error occurred while updating symptoms and concerns labeling: {e}"
+            )
             QMessageBox.critical(
                 None,
                 "Error",
@@ -394,7 +405,11 @@ class Data:
                     current_mental_health TEXT,
                     medical_history TEXT,
                     current_symptoms_concerns TEXT,
-                    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
+                    created_at DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                    last_emotion_update DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                    last_alertness_update DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                    last_mental_health_update DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')),
+                    last_symptoms_update DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
                 )
                     """
             )
@@ -573,32 +588,48 @@ class Data:
                     (medical_history,),
                 )
             if current_emotion:
+                last_emotion_update = datetime.now()
                 cursor.execute(
                     """
-                    UPDATE user_information SET current_emotion = ? WHERE id = 1
+                    UPDATE user_information SET current_emotion = ?, last_emotion_update = ? WHERE id = 1
                     """,
-                    (current_emotion,),
+                    (
+                        current_emotion,
+                        last_emotion_update,
+                    ),
                 )
             if alertness_state:
+                last_alertness_update = datetime.now()
                 cursor.execute(
                     """
-                    UPDATE user_information SET alertness_state = ? WHERE id = 1
+                    UPDATE user_information SET alertness_state = ?, last_alertness_update = ? WHERE id = 1
                     """,
-                    (alertness_state,),
+                    (
+                        alertness_state,
+                        last_alertness_update,
+                    ),
                 )
             if current_mental_health:
+                last_mental_health_update = datetime.now()
                 cursor.execute(
                     """
-                    UPDATE user_information SET current_mental_health = ? WHERE id = 1
+                    UPDATE user_information SET current_mental_health = ?, last_mental_health_update = ? WHERE id = 1
                     """,
-                    (current_mental_health,),
+                    (
+                        current_mental_health,
+                        last_mental_health_update,
+                    ),
                 )
             if current_symptoms_concerns:
+                last_symptoms_update = datetime.now()
                 cursor.execute(
                     """
-                    UPDATE user_information SET current_symptoms_concerns = ? WHERE id = 1
+                    UPDATE user_information SET current_symptoms_concerns = ?, last_symptoms_update = ? WHERE id = 1
                     """,
-                    (current_symptoms_concerns,),
+                    (
+                        current_symptoms_concerns,
+                        last_symptoms_update,
+                    ),
                 )
             self.conn.commit()
         except sqlite3.Error as e:

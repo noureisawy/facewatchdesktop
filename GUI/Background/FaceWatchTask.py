@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import QMessageBox
 import joblib
 from keras_facenet import FaceNet
 
+dir_name = "C:/Users/UG/Desktop/research/FaceWatch/Images"
+
 
 class FaceWatchTask(QThread):
     finished = pyqtSignal()
@@ -39,6 +41,46 @@ class FaceWatchTask(QThread):
         except Exception as e:
             print(e)
 
+    def save_frame_into_label(self, frame):
+        # check if the last update is more than 10 minutes
+        row = self.data.get_user_information()[0]
+        print(row)
+        data_labeling_dict = {
+            "emotions": row[9],
+            "alertness": row[10],
+            "mental_health": row[11],
+            "symptoms": row[12],
+        }
+        get_last_data = {
+            "emotions": row[3],
+            "alertness": row[4],
+            "mental_health": row[5],
+            "symptoms": row[6],
+        }
+        data_labeling_insert_dict = {
+            "emotions": self.data.insert_emotion_labeling,
+            "alertness": self.data.insert_tiredness_labeling,
+            "mental_health": self.data.insert_mental_health_labeling,
+            "symptoms": self.data.insert_symptoms_concerns_labeling,
+        }
+        for label, last_update in data_labeling_dict.items():
+            if label is None:
+                continue
+            last_update_unix = time.mktime(time.strptime(last_update, "%Y-%m-%d %H:%M:%S.%f"))
+            current_time_unix = time.time()
+            time_diff_seconds = current_time_unix - last_update_unix
+            print(time_diff_seconds)
+            if time_diff_seconds < 600:
+                # save the frame into the label
+                filename = (
+                    f'{dir_name}/{label}_label/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+                )
+                print(filename)
+                insert_label = data_labeling_insert_dict[label]
+                insert_label(get_last_data[label], time.strftime("%Y%m%d-%H%M%S"))
+                print(filename)
+                cv2.imwrite(filename, frame)
+
     def analyze_frame(self, frame):
         sub_file_name = "neutral"
         analysis = DeepFace.analyze(frame, actions=["emotion"])
@@ -62,8 +104,10 @@ class FaceWatchTask(QThread):
             self.notification.show_notification(analysis[0]["dominant_emotion"])
         # handle tiredness detection
         self.handle_tiredness_detection(frame, analysis)
+        # save the frame into the label
+        self.save_frame_into_label(frame)
         self.data.insert_emotion(analysis[0])
-        filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        filename = f'{dir_name}/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         # draw rectangle to main image around the face
         cv2.rectangle(
             frame,
@@ -109,7 +153,7 @@ class FaceWatchTask(QThread):
             sub_file_name = "alert"
         elif prediction == "non_vigilant":
             sub_file_name = "non_vigilant"
-        filename = f'C:/Users/UG/Desktop/research/FaceWatch/Images/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        filename = f'{dir_name}/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         cv2.imwrite(filename, frame)
         self.data.insert_tiredness(prediction)
 
@@ -124,7 +168,7 @@ class FaceWatchTask(QThread):
         self.is_running = False
 
     def run(self):  # sourcery skip: avoid-builtin-shadow
-        self.data = Data.get_instant()
+        self.data = Data()
         while self.is_running:
             map = {
                 "": 1,

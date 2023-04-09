@@ -125,9 +125,8 @@ class MainWindow(QMainWindow):
         self.faceWatchTask.finished.connect(
             lambda: print("face watch task is finished")
         )
-        # TODO: fix this
-        # self.faceWatchTask.start_task()
-        # self.ui.watchMe.setChecked(True)
+        self.faceWatchTask.start_task()
+        self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
         self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
@@ -145,6 +144,18 @@ class MainWindow(QMainWindow):
             self.ui.labelingDataContainer,
             self.ui.labelingImageContainer,
             self.ui.lowerLabeling,
+        )
+        self.ui.emotionsBtn.clicked.connect(
+            lambda: self.labelingData.set_label("emotions")
+        )
+        self.ui.alertnessBtn.clicked.connect(
+            lambda: self.labelingData.set_label("alertness")
+        )
+        self.ui.mentalHealthBtn.clicked.connect(
+            lambda: self.labelingData.set_label("mental_health")
+        )
+        self.ui.symptomsBtn.clicked.connect(
+            lambda: self.labelingData.set_label("symptoms")
         )
         self.ui.closeImageLabelingContainer.clicked.connect(
             lambda y: self.ui.lowerLabeling.collapseMenu()
