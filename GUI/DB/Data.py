@@ -74,13 +74,15 @@ class Data:
     def insert_into_emotion_labeling(self, emotion, image_path):
         # insert into labeling emotions table
         try:
-            self.insert_into_table(
+            cursor = self.conn.cursor()
+            cursor.execute(
                 """
                 INSERT INTO labeling_emotions(emotion, image_path, created_at)
                 VALUES(?, ?)
                 """,
                 (emotion, image_path, datetime.now()),
             )
+            self.conn.commit()
         except sqlite3.Error as e:
             print(f"An error occurred while inserting into the labeling emotions table: {e}")
             QMessageBox.critical(
@@ -89,6 +91,20 @@ class Data:
                 f"An error occurred while inserting into the labeling emotions table: {e}",
             )
 
+    def get_all_emotions_labeling(self):
+        # get all emotions labeling
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT * FROM labeling_emotions")
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting all emotions labeling: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting all emotions labeling: {e}",
+            )
+    
     def create_labeling_tiredness_table(self):
         # create a table to store labeling tiredness associated with user face images
         try:
@@ -112,19 +128,35 @@ class Data:
     def insert_into_tiredness_labeling(self, tiredness, image_path):
         # insert into labeling tiredness table
         try:
-            self.insert_into_table(
+            cursor = self.conn.cursor()
+            cursor.execute(
                 """
                 INSERT INTO labeling_tiredness(tiredness, image_path, created_at)
                 VALUES(?, ?)
                 """,
                 (tiredness, image_path, datetime.now()),
             )
+            self.conn.commit()
         except sqlite3.Error as e:
             print( f"An error occurred while inserting into the labeling tiredness table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling tiredness table: {e}",
+            )
+    
+    def get_all_tiredness_labeling(self):
+        # get all tiredness labeling
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT * FROM labeling_tiredness")
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting all tiredness labeling: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting all tiredness labeling: {e}",
             )
 
     def create_labeling_mental_health(self):
@@ -147,23 +179,39 @@ class Data:
                 "Error",
                 f"An error occurred while creating the labeling mental health table: {e}",
             )
-    
+
     def insert_into_mental_health_labeling(self, mental_health, image_path):
         # insert into labeling mental health table
         try:
-            self.insert_into_table(
+            cursor = self.conn.cursor()
+            cursor.execute(
                 """
                 INSERT INTO labeling_mental_health(mental_health, image_path, created_at)
                 VALUES(?, ?)
                 """,
                 (mental_health, image_path, datetime.now()),
             )
+            self.conn.commit()
         except sqlite3.Error as e:
             print(f"An error occurred while inserting into the labeling mental health table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling mental health table: {e}",
+            )
+    
+    def get_all_mental_health_labeling(self):
+        # get all mental health labeling
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT * FROM labeling_mental_health")
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting all mental health labeling: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting all mental health labeling: {e}",
             )
 
     def create_labeling_symptoms_concerns(self):
@@ -190,19 +238,35 @@ class Data:
     def insert_into_symptoms_concerns_labeling(self, symptoms_concerns, image_path):
         # insert into labeling symptoms and concerns table
         try:
-            self.insert_into_table(
+            cursor = self.conn.cursor()
+            cursor.execute(
                 """
                 INSERT INTO labeling_symptoms_concerns(symptoms_concerns, image_path, created_at)
                 VALUES(?, ?)
                 """,
                 (symptoms_concerns, image_path, datetime.now()),
             )
+            self.conn.commit()
         except sqlite3.Error as e:
             print(f"An error occurred while inserting into the labeling symptoms and concerns table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the labeling symptoms and concerns table: {e}",
+            )
+    
+    def get_all_symptoms_concerns_labeling(self):
+        # get all symptoms and concerns labeling
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT * FROM labeling_symptoms_concerns")
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting all symptoms and concerns labeling: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting all symptoms and concerns labeling: {e}",
             )
 
     def create_table(self, arg0):

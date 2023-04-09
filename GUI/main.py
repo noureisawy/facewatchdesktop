@@ -1,6 +1,6 @@
 import sys
 from PySide2 import *
-from ui_interface import *
+from ui_interface import Ui_MainWindow
 from PyQt5.QtCore import QDateTime
 from DataAnalysis.LineChart import LineChart
 from DataAnalysis.ScatterPlot import ScatterPlot
