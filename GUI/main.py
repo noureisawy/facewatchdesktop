@@ -14,6 +14,7 @@ from Background.Notification import Notification
 from DataAnalysis.TirednessData import TirednessData
 from SystemTray import SystemTray
 from user.User import User
+from LabelingData.LabelingData import LabelingData
 
 
 class MainWindow(QMainWindow):
@@ -138,6 +139,16 @@ class MainWindow(QMainWindow):
 
         # Profile Page
         self.user = User(self)
+
+        # Labeling Page
+        self.labelingData = LabelingData(
+            self.ui.labelingDataContainer,
+            self.ui.labelingImageContainer,
+            self.ui.lowerLabeling,
+        )
+        self.ui.closeImageLabelingContainer.clicked.connect(
+            lambda y: self.ui.lowerLabeling.collapseMenu()
+        )
 
     def handle_select_gallery_change(self, index):
         if index == 0:

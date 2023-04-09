@@ -78,7 +78,13 @@
       "expandedSize": [
         {
           "width": "parent",
-          "height": "parent"
+          "height": 320
+        }
+      ],
+      "menuTransitionAnimation": [
+        {
+          "animationDuration": 200,
+          "animationEasingCurve": "Linear"
         }
       ]
     },

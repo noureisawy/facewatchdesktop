@@ -14,43 +14,56 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400, 300)
+        Form.resize(500, 116)
+        Form.setStyleSheet("QPushButton{\n"
+"background-color:#16191d;\n"
+"border-radius:15px;\n"
+"padding: 10px;\n"
+"color: white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color:#2c313c;\n"
+"}\n"
+"#widget {\n"
+"    border-radius: 10px;\n"
+"    border: 5px solid white;\n"
+"    padding: 10px;\n"
+"}\n"
+"")
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget = QtWidgets.QWidget(Form)
+        self.widget.setMinimumSize(QtCore.QSize(0, 60))
+        font = QtGui.QFont()
+        font.setBold(False)
+        font.setWeight(50)
+        self.widget.setFont(font)
+        self.widget.setStyleSheet("")
         self.widget.setObjectName("widget")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout_2.setSpacing(15)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.widget)
+        self.label.setWordWrap(True)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.label_2 = QtWidgets.QLabel(self.widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
+        self.label_2.setWordWrap(True)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_2.addWidget(self.label_2)
-        self.pushButton = QtWidgets.QPushButton(self.widget)
-        self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_2.addWidget(self.pushButton)
-        self.pushButton_2 = QtWidgets.QPushButton(self.widget)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
+        self.showImage = QtWidgets.QPushButton(self.widget)
+        self.showImage.setStyleSheet("")
+        self.showImage.setObjectName("showImage")
+        self.horizontalLayout_2.addWidget(self.showImage, 0, QtCore.Qt.AlignRight)
+        self.editLabel = QtWidgets.QPushButton(self.widget)
+        self.editLabel.setObjectName("editLabel")
+        self.horizontalLayout_2.addWidget(self.editLabel, 0, QtCore.Qt.AlignLeft)
         self.verticalLayout.addWidget(self.widget)
-        self.widget_2 = QtWidgets.QWidget(Form)
-        self.widget_2.setObjectName("widget_2")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.widget_2)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label_3 = QtWidgets.QLabel(self.widget_2)
-        self.label_3.setObjectName("label_3")
-        self.horizontalLayout.addWidget(self.label_3)
-        self.label_4 = QtWidgets.QLabel(self.widget_2)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout.addWidget(self.label_4)
-        self.pushButton_3 = QtWidgets.QPushButton(self.widget_2)
-        self.pushButton_3.setObjectName("pushButton_3")
-        self.horizontalLayout.addWidget(self.pushButton_3)
-        self.pushButton_4 = QtWidgets.QPushButton(self.widget_2)
-        self.pushButton_4.setObjectName("pushButton_4")
-        self.horizontalLayout.addWidget(self.pushButton_4)
-        self.verticalLayout.addWidget(self.widget_2)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -60,12 +73,8 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "date"))
         self.label_2.setText(_translate("Form", "label"))
-        self.pushButton.setText(_translate("Form", "Show"))
-        self.pushButton_2.setText(_translate("Form", "Edit"))
-        self.label_3.setText(_translate("Form", "date"))
-        self.label_4.setText(_translate("Form", "label"))
-        self.pushButton_3.setText(_translate("Form", "Show"))
-        self.pushButton_4.setText(_translate("Form", "Edit"))
+        self.showImage.setText(_translate("Form", "Show Image"))
+        self.editLabel.setText(_translate("Form", "Edit"))
 
 
 if __name__ == "__main__":
