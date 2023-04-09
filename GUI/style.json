@@ -27,13 +27,13 @@
       "name": "leftMenuContainer",
       "defaultSize": [
         {
-          "width": 50,
+          "width": 47,
           "height": "parent"
         }
       ],
       "collapsedSize": [
         {
-          "width": 50,
+          "width": 47,
           "height": "parent"
         }
       ],
@@ -58,6 +58,27 @@
         {
           "animationDuration": 200,
           "animationEasingCurve": "Linear"
+        }
+      ]
+    },
+    {
+      "name": "lowerLabeling",
+      "defaultSize": [
+        {
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "collapsedSize": [
+        {
+          "width": 0,
+          "height": 0
+        }
+      ],
+      "expandedSize": [
+        {
+          "width": "parent",
+          "height": "parent"
         }
       ]
     },
@@ -118,7 +139,7 @@
   ],
   "QPushButtonGroup": [
     {
-      "Buttons": ["homeBtn", "dataBtn", "reportsBtn"],
+      "Buttons": ["homeBtn", "dataBtn", "reportsBtn", "snapHealthBtn"],
       "Style": [
         {
           "Active": "background-color: #1f232a;",
@@ -128,6 +149,20 @@
     },
     {
       "Buttons": ["alertBtn", "non_vigilantBtn", "tiredBtn"],
+      "Style": [
+        {
+          "Active": "background-color: #2c313c;",
+          "NotActive": ""
+        }
+      ]
+    },
+    {
+      "Buttons": [
+        "emotionsBtn",
+        "alertnessBtn",
+        "mentalHealthBtn",
+        "symptomsBtn"
+      ],
       "Style": [
         {
           "Active": "background-color: #2c313c;",
@@ -195,7 +230,8 @@
             {
               "homeBtn": "page_4",
               "dataBtn": "page_5",
-              "reportsBtn": "page_6"
+              "reportsBtn": "page_6",
+              "snapHealthBtn": "page_7"
             }
           ]
         }

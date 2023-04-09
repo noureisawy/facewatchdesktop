@@ -77,14 +77,18 @@ padding: 10px;
 background-color:#2c313c;
 }
 
-#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #dataAnalysisSelection, #selectGalleryComp, #tiredBtn, #non_vigilantBtn, #alertBtn, #shareBtn{
+#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #dataAnalysisSelection, #selectGalleryComp, #tiredBtn, #non_vigilantBtn, #alertBtn, #shareBtn, #emotionsBtn, #alertnessBtn, #mentalHealthBtn,#symptomsBtn{
 background-color:#16191d;
 border-radius:15px;
 padding: 10px;
 }
 
-#neutralBtn:hover, #surpriseBtn:hover, #angryBtn:hover, #sadBtn:hover, #happyBtn:hover, #fearBtn:hover, #disgustBtn:hover, #tiredBtn:hover, #non_vigilantBtn:hover, #alertBtn:hover, #shareBtn:hover{
+#neutralBtn:hover, #surpriseBtn:hover, #angryBtn:hover, #sadBtn:hover, #happyBtn:hover, #fearBtn:hover, #disgustBtn:hover, #tiredBtn:hover, #non_vigilantBtn:hover, #alertBtn:hover, #shareBtn:hover, #emotionsBtn:hover, #alertnessBtn:hover, #mentalHealthBtn:hover,#symptomsBtn:hover{
 background-color:#2c313c;
+}
+
+#labelingDataContainer, #labelingImageContainer{
+background-color: white;
 }
 
 
@@ -1627,6 +1631,18 @@ border-radius: 8px;</string>
           <item>
            <widget class="QWidget" name="mainContainer" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_14">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QCustomStackedWidget" name="centerMenuPages">
                <property name="currentIndex">
@@ -2233,8 +2249,26 @@ border-radius: 8px;</string>
                <widget class="QWidget" name="page_7">
                 <layout class="QVBoxLayout" name="verticalLayout_25">
                  <item>
-                  <widget class="QWidget" name="lowerLableing" native="true">
+                  <widget class="QWidget" name="upperLableing" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <layout class="QVBoxLayout" name="verticalLayout_26">
+                    <property name="leftMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>9</number>
+                    </property>
                     <item>
                      <widget class="QFrame" name="frame_22">
                       <property name="frameShape">
@@ -2244,10 +2278,17 @@ border-radius: 8px;</string>
                        <enum>QFrame::Raised</enum>
                       </property>
                       <layout class="QHBoxLayout" name="horizontalLayout_29">
+                       <property name="topMargin">
+                        <number>9</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>9</number>
+                       </property>
                        <item alignment="Qt::AlignLeft">
                         <widget class="QLabel" name="label_31">
                          <property name="font">
                           <font>
+                           <pointsize>12</pointsize>
                            <weight>75</weight>
                            <bold>true</bold>
                           </font>
@@ -2287,6 +2328,41 @@ border-radius: 8px;</string>
                      </widget>
                     </item>
                     <item>
+                     <widget class="QFrame" name="frame_14">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_31">
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QLabel" name="label_32">
+                         <property name="font">
+                          <font>
+                           <pointsize>6</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Your data will only be used for research purposes. By sharing it, you give us permission to collect and analyze it.</string>
+                         </property>
+                         <property name="wordWrap">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
                      <widget class="QFrame" name="frame_24">
                       <property name="frameShape">
                        <enum>QFrame::StyledPanel</enum>
@@ -2294,6 +2370,60 @@ border-radius: 8px;</string>
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_30">
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="emotionsBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Emotions</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="alertnessBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Alertness</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="mentalHealthBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Mental Health</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="symptomsBtn">
+                         <property name="font">
+                          <font>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Symptoms</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
@@ -2304,23 +2434,105 @@ border-radius: 8px;</string>
                       <property name="frameShadow">
                        <enum>QFrame::Raised</enum>
                       </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_14">
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_32">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <widget class="QScrollArea" name="scrollArea_3">
+                         <property name="widgetResizable">
+                          <bool>true</bool>
+                         </property>
+                         <widget class="QWidget" name="labelingDataContainer">
+                          <property name="geometry">
+                           <rect>
+                            <x>0</x>
+                            <y>0</y>
+                            <width>469</width>
+                            <height>108</height>
+                           </rect>
+                          </property>
+                         </widget>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="upperLabeling" native="true"/>
+                  <widget class="QCustomSlideMenu" name="lowerLabeling" native="true">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>300</height>
+                    </size>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_27">
+                    <property name="leftMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>9</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>9</number>
+                    </property>
+                    <item alignment="Qt::AlignRight">
+                     <widget class="QPushButton" name="closeImageLabelingContainer">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/icons/public/icons/x-circle.svg</normaloff>:/icons/public/icons/x-circle.svg</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>24</width>
+                        <height>24</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QScrollArea" name="scrollArea_2">
+                      <property name="widgetResizable">
+                       <bool>true</bool>
+                      </property>
+                      <widget class="QWidget" name="labelingImageContainer">
+                       <property name="geometry">
+                        <rect>
+                         <x>0</x>
+                         <y>0</y>
+                         <width>469</width>
+                         <height>228</height>
+                        </rect>
+                       </property>
+                      </widget>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -2495,7 +2707,7 @@ border-radius: 8px;</string>
                       <property name="geometry">
                        <rect>
                         <x>0</x>
-                        <y>0</y>
+                        <y>-367</y>
                         <width>269</width>
                         <height>894</height>
                        </rect>

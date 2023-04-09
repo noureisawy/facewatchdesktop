@@ -42,7 +42,7 @@ class Data:
 
 
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while connecting to the database: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -64,7 +64,7 @@ class Data:
                     """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the labeling emotions table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -82,7 +82,7 @@ class Data:
                 (emotion, image_path, datetime.now()),
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while inserting into the labeling emotions table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -98,12 +98,12 @@ class Data:
                     id INTEGER PRIMARY KEY,
                     tiredness TEXT NOT NULL,
                     image_path TEXT NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
                     """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the labeling tiredness table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -120,7 +120,7 @@ class Data:
                 (tiredness, image_path, datetime.now()),
             )
         except sqlite3.Error as e:
-            print(e)
+            print( f"An error occurred while inserting into the labeling tiredness table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -136,12 +136,12 @@ class Data:
                     id INTEGER PRIMARY KEY,
                     mental_health TEXT NOT NULL,
                     image_path TEXT NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
                     """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the labeling mental health table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -159,7 +159,7 @@ class Data:
                 (mental_health, image_path, datetime.now()),
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while inserting into the labeling mental health table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -175,12 +175,12 @@ class Data:
                     id INTEGER PRIMARY KEY,
                     symptoms_concerns TEXT NOT NULL,
                     image_path TEXT NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
                 )
                     """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the labeling symptoms and concerns table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -198,7 +198,7 @@ class Data:
                 (symptoms_concerns, image_path, datetime.now()),
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while inserting into the labeling symptoms and concerns table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -222,7 +222,7 @@ class Data:
             """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the tiredness table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -251,7 +251,7 @@ class Data:
             self.create_user_information()
 
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the user information table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -277,7 +277,7 @@ class Data:
             """
             )
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating the emotions table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -294,7 +294,7 @@ class Data:
             )
             return cursor.fetchall()
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while retrieving user information: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -312,7 +312,7 @@ class Data:
                     end_date,
                 )
             except sqlite3.Error as e:
-                print(e)
+                print(f"An error occurred while retrieving data: {e}")
                 QMessageBox.critical(
                     None, "Error", f"An error occurred while retrieving data: {e}"
                 )
@@ -326,7 +326,7 @@ class Data:
                     end_date,
                 )
             except sqlite3.Error as e:
-                print(e)
+                print(f"An error occurred while retrieving data: {e}")
                 QMessageBox.critical(
                     None, "Error", f"An error occurred while retrieving data: {e}"
                 )
@@ -347,7 +347,7 @@ class Data:
                     end_date,
                 )
             except sqlite3.Error as e:
-                print(e)
+                print(f"An error occurred while deleting data: {e}")
                 QMessageBox.critical(
                     None, "Error", f"An error occurred while deleting data: {e}"
                 )
@@ -361,7 +361,7 @@ class Data:
                     end_date,
                 )
             except sqlite3.Error as e:
-                print(e)
+                print(f"An error occurred while deleting data: {e}")
                 QMessageBox.critical(
                     None, "Error", f"An error occurred while deleting data: {e}"
                 )
@@ -382,7 +382,7 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while inserting data: {e}")
             QMessageBox.critical(
                 None, "Error", f"An error occurred while inserting data: {e}"
             )
@@ -451,7 +451,7 @@ class Data:
                 )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while updating user information: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
@@ -468,7 +468,7 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while creating user information: {e}")
 
     def insert_emotion(self, emotion_json_data):
         try:
@@ -490,7 +490,7 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(e)
+            print(f"An error occurred while inserting data: {e}")
             QMessageBox.critical(
                 None, "Error", f"An error occurred while inserting data: {e}"
             )
