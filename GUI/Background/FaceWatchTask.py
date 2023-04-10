@@ -42,7 +42,7 @@ class FaceWatchTask(QThread):
             print(e)
 
     def save_frame_into_label(self, frame):
-        # check if the last update is more than 10 minutes
+        # check if the last update is more than 5 minutes
         row = self.data.get_user_information()[0]
         print(row)
         data_labeling_dict = {
@@ -70,7 +70,7 @@ class FaceWatchTask(QThread):
             current_time_unix = time.time()
             time_diff_seconds = current_time_unix - last_update_unix
             print(time_diff_seconds)
-            if time_diff_seconds < 600:
+            if time_diff_seconds < 300:
                 # save the frame into the label
                 filename = (
                     f'{dir_name}/{label}_label/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
