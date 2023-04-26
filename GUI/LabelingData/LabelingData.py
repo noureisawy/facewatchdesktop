@@ -38,10 +38,22 @@ class LabelingData:
     def share_data(self):
         images = []
         labels = []
+        noImages = 0
         for label, data in self.data_dict.items():
             for row in data():
+                data_shared_before = self.data.check_if_data_shared_before(
+                    row[1], row[2]
+                )
+                if data_shared_before:
+                    continue
                 labels.append(row[1])
                 images.append(f"{label}_label/{row[2]}.jpg")
+                self.data.insert_shared_data(row[1], row[2])
+                noImages += 1
+                if noImages >= 1000:
+                    break
+            if noImages >= 1000:
+                break
 
         url = "http://localhost:8000/labeling/receive_images/"
         files = [

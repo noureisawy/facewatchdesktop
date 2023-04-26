@@ -38,6 +38,8 @@ class Data:
             self.create_labeling_mental_health()
             # Create a table to store labeling symptoms and concerns associated with user face images
             self.create_labeling_symptoms_concerns()
+            # Create a table to store all the data which shared with the server
+            self.create_shared_data_table()
 
         except sqlite3.Error as e:
             print(f"An error occurred while connecting to the database: {e}")
@@ -47,6 +49,88 @@ class Data:
                 f"An error occurred while connecting to the database: {e}",
             )
 
+    def create_shared_data_table(self):
+        # create a table to store all the data which shared with the server
+        try:
+            self.create_table("""
+                CREATE TABLE IF NOT EXISTS shared_data (
+                    id INTEGER PRIMARY KEY,
+                    image_path TEXT NOT NULL,
+                    label TEXT NOT NULL
+                    )
+            """)
+        except sqlite3.Error as e:
+            print(f"An error occurred while creating the shared data table: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the shared data table: {e}",
+            )
+    
+    def insert_shared_data(self, label, image_path):
+        # insert into shared data table
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO shared_data(image_path, label)
+                VALUES(?, ?)
+                """,
+                (image_path, label),
+            )
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print(
+                f"An error occurred while inserting into the shared data table: {e}"
+            )
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the shared data table: {e}",
+            )
+    
+    def check_if_data_shared_before(self, label, image_path):
+        # check if data shared before
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM shared_data WHERE image_path = ? AND label = ?
+                """,
+                (image_path, label),
+            )
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(
+                f"An error occurred while checking if data shared before: {e}"
+            )
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while checking if data shared before: {e}",
+            )
+
+    
+    def delete_sharing_data_table(self):
+        # delete all the data in the sharing data table
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                DELETE FROM shared_data
+                """
+            )
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print(
+                f"An error occurred while deleting the shared data table: {e}"
+            )
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while deleting the shared data table: {e}",
+            )
+            
     def create_labeling_emotions_table(self):
         # create a table to store labeling emotions associated with user face images
         try:
