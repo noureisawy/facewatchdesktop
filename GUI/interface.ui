@@ -1647,7 +1647,7 @@ border-radius: 8px;</string>
              <item>
               <widget class="QCustomStackedWidget" name="centerMenuPages">
                <property name="currentIndex">
-                <number>3</number>
+                <number>1</number>
                </property>
                <widget class="QWidget" name="page_4">
                 <layout class="QHBoxLayout" name="horizontalLayout_15">
@@ -2699,9 +2699,9 @@ border-radius: 8px;</string>
                       <property name="geometry">
                        <rect>
                         <x>0</x>
-                        <y>0</y>
+                        <y>-120</y>
                         <width>269</width>
-                        <height>894</height>
+                        <height>642</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -2976,7 +2976,7 @@ border-radius: 8px;</string>
                          <property name="minimumSize">
                           <size>
                            <width>0</width>
-                           <height>200</height>
+                           <height>0</height>
                           </size>
                          </property>
                          <property name="frameShape">
@@ -3000,7 +3000,7 @@ border-radius: 8px;</string>
                            </widget>
                           </item>
                           <item>
-                           <widget class="QPlainTextEdit" name="currentMentalHealth">
+                           <widget class="QComboBox" name="currentMentalHealth">
                             <property name="font">
                              <font>
                               <weight>75</weight>
@@ -3011,7 +3011,62 @@ border-radius: 8px;</string>
                              <string notr="true">background-color :white;
 color : black;
 padding : 8px;
-border-radius: 8px;</string>
+border-radius: 8px;
+</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frame_17">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>0</height>
+                          </size>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_23">
+                          <item>
+                           <widget class="QLabel" name="label_28">
+                            <property name="font">
+                             <font>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Current Symptoms And Concerns</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QComboBox" name="currentSymptomsConcerns">
+                            <property name="font">
+                             <font>
+                              <weight>75</weight>
+                              <bold>true</bold>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">background-color :white;
+color : black;
+padding : 8px;
+border-radius: 8px;
+</string>
                             </property>
                            </widget>
                           </item>
@@ -3048,59 +3103,6 @@ border-radius: 8px;</string>
                           </item>
                           <item>
                            <widget class="QPlainTextEdit" name="medicalHistory">
-                            <property name="font">
-                             <font>
-                              <weight>75</weight>
-                              <bold>true</bold>
-                             </font>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true">background-color :white;
-color : black;
-padding : 8px;
-border-radius: 8px;</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QFrame" name="frame_17">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>0</width>
-                           <height>200</height>
-                          </size>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::StyledPanel</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Raised</enum>
-                         </property>
-                         <layout class="QVBoxLayout" name="verticalLayout_23">
-                          <item>
-                           <widget class="QLabel" name="label_28">
-                            <property name="font">
-                             <font>
-                              <weight>75</weight>
-                              <bold>true</bold>
-                             </font>
-                            </property>
-                            <property name="text">
-                             <string>Current Symptoms And Concerns</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QPlainTextEdit" name="currentSymptomsConcerns">
                             <property name="font">
                              <font>
                               <weight>75</weight>

@@ -6,10 +6,14 @@ from PyQt5.QtWidgets import (
     QDialogButtonBox,
     QDialog,
     QVBoxLayout,
-    QLineEdit,
+    QComboBox,
+    QMessageBox,
 )
+from constants import default_options
 from EmotionGallery.ReadImages import ReadLabeledImage
 import functools
+import requests
+from constants import dir_name
 
 
 class LabelingData:
@@ -20,22 +24,40 @@ class LabelingData:
         self.lower_widget = lower_widget
         self.image_container = image_container
         self.read_labeled_image = ReadLabeledImage(self.image_container)
-
-    def set_label(self, label):
-        self.label = label
-        self.update_widget()
-
-    def update_widget(self):
-        data_dict = {
+        self.data_dict = {
             "emotions": self.data.get_all_emotions_labeling,
             "alertness": self.data.get_all_tiredness_labeling,
             "mental_health": self.data.get_all_mental_health_labeling,
             "symptoms": self.data.get_all_symptoms_concerns_labeling,
         }
-        data = data_dict[self.label]()
+
+    def set_label(self, label):
+        self.label = label
+        self.update_widget()
+
+    def share_data(self):
+        images = []
+        labels = []
+        for label, data in self.data_dict.items():
+            for row in data():
+                labels.append(row[1])
+                images.append(f"{label}_label/{row[2]}.jpg")
+
+        url = "http://localhost:8000/labeling/receive_images/"
+        files = [
+            ("images", open(f"{dir_name}/{image_path}", "rb")) for image_path in images
+        ]
+        data = {"labels": labels}
+        response = requests.post(url, files=files, data=data)
+        if response.status_code == 200:
+            QMessageBox.information(None, "Success", "Images sent successfully")
+        else:
+            QMessageBox.warning(None, "Error", "Failed to send images")
+
+    def update_widget(self):
+        data = self.data_dict[self.label]()
         self.widget.clear()
         for row in data:
-            print(row)
             parent_widget = QWidget()
             data_row = Ui_Form()
             data_row.setupUi(parent_widget)
@@ -53,7 +75,6 @@ class LabelingData:
             self.widget.setItemWidget(item, parent_widget)
 
     def show_image(self, created_at):
-        print(created_at)
         self.read_labeled_image.set_attr(f"{self.label}_label", created_at)
         self.lower_widget.expandMenu()
 
@@ -73,9 +94,11 @@ class LabelingData:
         dialog.setLayout(layout)
 
         # Add a line edit to the dialog window
-        line_edit = QLineEdit()
-        line_edit.setText(data_row.label_2.text())
-        layout.addWidget(line_edit)
+        combo = QComboBox()
+        options = default_options[self.label]
+        combo.addItems(options)
+        combo.setCurrentText(data_row.label_2.text())
+        layout.addWidget(combo)
 
         # Add an OK button to the dialog window
         button_box = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
@@ -86,8 +109,6 @@ class LabelingData:
         # Show the dialog window and wait for the user to close it
         if dialog.exec_() == QDialog.Accepted:
             # Update the label text in the main window
-            print(line_edit.text())
-            print(data_row.label.text())
-            data_row.label_2.setText(line_edit.text())
-            update(line_edit.text(),data_row.label.text())
-            
+            selected_option = combo.currentText()
+            data_row.label_2.setText(selected_option)
+            update(selected_option, data_row.label.text())

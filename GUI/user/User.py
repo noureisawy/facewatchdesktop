@@ -2,6 +2,8 @@ from DB.Data import Data
 from PyQt5.QtWidgets import QMessageBox
 from datetime import datetime
 import time
+from constants import default_options
+
 
 class User:
     __gender = {
@@ -22,6 +24,12 @@ class User:
         "non_vigilant": 1,
         "tired": 2,
     }
+    __mental_health = {}
+    for index, mental_health in enumerate(default_options["mental_health"]):
+        __mental_health[mental_health] = index
+    __symptoms = {}
+    for index, symptom in enumerate(default_options["symptoms"]):
+        __symptoms[symptom] = index
 
     def __init__(self, window):
         self.window = window
@@ -69,9 +77,21 @@ class User:
         )
 
         self.current_mental_health = row[5]
-        self.window.ui.currentMentalHealth.setPlainText(self.current_mental_health)
-        self.window.ui.currentMentalHealth.textChanged.connect(
+        self.window.ui.currentMentalHealth.addItems(default_options["mental_health"])
+        self.window.ui.currentMentalHealth.setCurrentIndex(
+            User.__mental_health.get(self.current_mental_health, 0)
+        )
+        self.window.ui.currentMentalHealth.currentIndexChanged.connect(
             self.handle_current_mental_health_changed
+        )
+
+        self.current_symptoms_concerns = row[7]
+        self.window.ui.currentSymptomsConcerns.addItems(default_options["symptoms"])
+        self.window.ui.currentSymptomsConcerns.setCurrentIndex(
+            User.__symptoms.get(self.current_symptoms_concerns, 0)
+        )
+        self.window.ui.currentSymptomsConcerns.currentIndexChanged.connect(
+            self.handle_current_symptoms_concerns_changed
         )
 
         self.medical_history = row[6]
@@ -80,23 +100,17 @@ class User:
             self.handle_medical_history_changed
         )
 
-        self.current_symptoms_concerns = row[7]
-        self.window.ui.currentSymptomsConcerns.setPlainText(
-            self.current_symptoms_concerns
-        )
-        self.window.ui.currentSymptomsConcerns.textChanged.connect(
-            self.handle_current_symptoms_concerns_changed
-        )
-
     def handle_birth_year_changed(self):
         # check if text is a number
         text = self.window.ui.birthYear.toPlainText()
-        if text.isdigit() & (len(text) <= 4):
+        if len(text) == 0:
+            self.set_birth_year(text)
+        elif text.isdigit() & (len(text) == 4):
             self.set_birth_year(text)
         elif len(text) > 4:
             QMessageBox.warning(None, "Warning", "Birth year must be 4 digits")
             self.window.ui.birthYear.setText(self.birth_year)
-        else:
+        elif not text.isdigit():
             QMessageBox.warning(None, "Warning", "Birth year must be a number")
             self.window.ui.birthYear.setText(self.birth_year)
 
@@ -109,15 +123,17 @@ class User:
     def handle_alertness_state_changed(self, index):
         self.set_alertness_state(self.window.ui.alertnessState.itemText(index))
 
-    def handle_current_mental_health_changed(self):
-        self.set_current_mental_health(self.window.ui.currentMentalHealth.toPlainText())
+    def handle_current_mental_health_changed(self, index):
+        self.set_current_mental_health(
+            self.window.ui.currentMentalHealth.itemText(index)
+        )
 
     def handle_medical_history_changed(self):
         self.set_medical_history(self.window.ui.medicalHistory.toPlainText())
 
-    def handle_current_symptoms_concerns_changed(self):
+    def handle_current_symptoms_concerns_changed(self, index):
         self.set_current_symptoms_concerns(
-            self.window.ui.currentSymptomsConcerns.toPlainText()
+            self.window.ui.currentSymptomsConcerns.itemText(index)
         )
 
     def set_birth_year(self, birth_year):

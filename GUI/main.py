@@ -15,6 +15,7 @@ from DataAnalysis.TirednessData import TirednessData
 from SystemTray import SystemTray
 from user.User import User
 from LabelingData.LabelingData import LabelingData
+import time
 
 
 class MainWindow(QMainWindow):
@@ -125,8 +126,9 @@ class MainWindow(QMainWindow):
         self.faceWatchTask.finished.connect(
             lambda: print("face watch task is finished")
         )
-        self.faceWatchTask.start_task()
-        self.ui.watchMe.setChecked(True)
+        # TODO: uncomment this line to start face watch task
+        # self.faceWatchTask.start_task()
+        # self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
         self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
@@ -160,6 +162,15 @@ class MainWindow(QMainWindow):
         self.ui.closeImageLabelingContainer.clicked.connect(
             lambda y: self.ui.lowerLabeling.collapseMenu()
         )
+        self.ui.shareBtn.clicked.connect(self.share_data)
+    
+    def share_data(self):
+        self.ui.shareBtn.setEnabled(False)
+        self.ui.shareBtn.setText("Sharing...")
+        QApplication.processEvents()
+        self.labelingData.share_data()
+        self.ui.shareBtn.setEnabled(True)
+        self.ui.shareBtn.setText("Share")
 
     def handle_select_gallery_change(self, index):
         if index == 0:
