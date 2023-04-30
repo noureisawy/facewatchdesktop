@@ -10,13 +10,27 @@ class Notification:
         duration = 5 * 1000
         self.tray.showMessage(notificationTitle, notificationMessage, icon, duration)
 
-    def __init__(self, tray):
+    def __init__(self, tray, show_notification):
         self.tray = tray
- 
+        self.show_notification = show_notification
+
     def show_labeling_notification(self):
-        self.show_tray_message("Please label your emotions.", "Face Watch Emotion Labeling")
+        if not self.show_notification:
+            return
+        self.show_tray_message(
+            "Please label your emotions.", "Face Watch Emotion Labeling"
+        )
+
+    def show_reporting_notification(self):
+        if not self.show_notification:
+            return
+        self.show_tray_message(
+            "FaceWatch", "A new report added, Please check your new report"
+        )
 
     def show_notification(self, emotion):
+        if not self.show_notification:
+            return
         emotions_notifications = {
             "happy": [
                 "That's great that you're feeling happy! Keep up the good work.",

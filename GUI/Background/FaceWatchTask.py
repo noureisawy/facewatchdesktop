@@ -6,7 +6,10 @@ import time
 from PyQt5.QtWidgets import QMessageBox
 import joblib
 from keras_facenet import FaceNet
-from constants import dir_name
+from constants import dir_name, diseases_unique_values, diseases_reports
+import tensorflow as tf
+import numpy as np
+
 
 class FaceWatchTask(QThread):
     finished = pyqtSignal()
@@ -19,6 +22,9 @@ class FaceWatchTask(QThread):
         self.notification = notification
         self.knn = joblib.load("Models/knn_model.joblib")
         self.facenet = FaceNet()
+        self.diseasesModel = tf.keras.models.load_model(
+            "Models/diseaseDetectionModel.h5"
+        )
         super().__init__()
 
     def take_photo(self):
@@ -110,6 +116,8 @@ class FaceWatchTask(QThread):
         self.handle_tiredness_detection(frame, analysis)
         # save the frame into the label
         self.save_frame_into_label(frame, analysis)
+        # handle the reporting data
+        self.handle_report(frame, analysis)
         self.data.insert_emotion(analysis[0])
         filename = f'{dir_name}/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         # draw rectangle to main image around the face
@@ -192,3 +200,31 @@ class FaceWatchTask(QThread):
             time.sleep(timeInt)
         self.data.conn.close()
         self.finished.emit()
+
+    def normalize_image(self, img):
+        img = img.astype(np.float32)
+        # scale pixel values between 0 and 1
+        img /= 255.0
+        # normalize using mean and standard deviation
+        img -= np.mean(img)
+        img /= np.std(img)
+        return img
+
+    def handle_report(self, frame, analysis):
+        face_image = frame[
+            analysis[0]["region"]["y"] : analysis[0]["region"]["y"]
+            + analysis[0]["region"]["h"],
+            analysis[0]["region"]["x"] : analysis[0]["region"]["x"]
+            + analysis[0]["region"]["w"],
+        ]
+        face_image = cv2.resize(face_image, (160, 160))
+        face_image = np.array([self.normalize_image(face_image)])
+        prediction = self.diseasesModel.predict(face_image)
+        prediction_index = np.argmax(prediction)
+        if prediction[prediction_index] > 0.9:
+            disease = diseases_unique_values[prediction_index]
+            disease_report = diseases_reports[disease]
+            self.data.insert_report(disease_report)
+            self.notification.show_reporting_notification()
+            print("reporting",disease_report)
+        print("prediction", prediction)

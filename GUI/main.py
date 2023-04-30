@@ -15,7 +15,8 @@ from DataAnalysis.TirednessData import TirednessData
 from SystemTray import SystemTray
 from user.User import User
 from LabelingData.LabelingData import LabelingData
-import time
+from Background.ShareDataThread import ShareDataThread
+from Reporting.ReportData import ReportData
 
 
 class MainWindow(QMainWindow):
@@ -114,7 +115,9 @@ class MainWindow(QMainWindow):
         )
 
         # notification
-        notification = Notification(tray)
+        self.ui.notifyMe.setChecked(True)
+        notification = Notification(tray, True)
+        self.ui.notifyMe.toggled.connect(self.handle_checkbox_notify_me_changed)
 
         # Settings Page
 
@@ -127,8 +130,8 @@ class MainWindow(QMainWindow):
             lambda: print("face watch task is finished")
         )
         # TODO: uncomment this line to start face watch task
-        # self.faceWatchTask.start_task()
-        # self.ui.watchMe.setChecked(True)
+        self.faceWatchTask.start_task()
+        self.ui.watchMe.setChecked(True)
 
         # trigger watch me checkbox
         self.ui.watchMe.toggled.connect(self.handle_checkbox_watch_me_changed)
@@ -163,14 +166,29 @@ class MainWindow(QMainWindow):
             lambda y: self.ui.lowerLabeling.collapseMenu()
         )
         self.ui.shareBtn.clicked.connect(self.share_data)
-    
+
+        # Report Page
+        self.reportData = ReportData(self.ui.reportsDataContainer)
+
     def share_data(self):
         self.ui.shareBtn.setEnabled(False)
         self.ui.shareBtn.setText("Sharing...")
         QApplication.processEvents()
-        self.labelingData.share_data()
-        self.ui.shareBtn.setEnabled(True)
+
+        self.share_thread = ShareDataThread()
+        self.share_thread.finished.connect(lambda: self.on_share_finished())
+        self.share_thread.error.connect(lambda message: self.on_share_error(message))
+        self.share_thread.start()
+
+    def on_share_finished(self):
         self.ui.shareBtn.setText("Share")
+        self.ui.shareBtn.setEnabled(True)
+        QMessageBox.information(None, "Success", "Images sent successfully")
+
+    def on_share_error(self, message):
+        self.ui.shareBtn.setText("Share")
+        self.ui.shareBtn.setEnabled(True)
+        QMessageBox.warning(None, "Error", message)
 
     def handle_select_gallery_change(self, index):
         if index == 0:
@@ -190,8 +208,13 @@ class MainWindow(QMainWindow):
         self.update_data()
 
     def handle_interval_combobox_changed(self, text):
-        print(text)
         self.faceWatchTask.interval = text
+
+    def handle_checkbox_notify_me_changed(self, checked):
+        if checked:
+            self.faceWatchTask.notification = Notification(tray, True)
+        else:
+            self.faceWatchTask.notification = Notification(tray, False)
 
     def handle_checkbox_watch_me_changed(self, checked):
         if checked:

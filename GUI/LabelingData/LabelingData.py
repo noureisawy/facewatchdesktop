@@ -7,13 +7,10 @@ from PyQt5.QtWidgets import (
     QDialog,
     QVBoxLayout,
     QComboBox,
-    QMessageBox,
 )
 from constants import default_options
 from EmotionGallery.ReadImages import ReadLabeledImage
 import functools
-import requests
-from constants import dir_name
 
 
 class LabelingData:
@@ -34,37 +31,6 @@ class LabelingData:
     def set_label(self, label):
         self.label = label
         self.update_widget()
-
-    def share_data(self):
-        images = []
-        labels = []
-        noImages = 0
-        for label, data in self.data_dict.items():
-            for row in data():
-                data_shared_before = self.data.check_if_data_shared_before(
-                    row[1], row[2]
-                )
-                if data_shared_before:
-                    continue
-                labels.append(row[1])
-                images.append(f"{label}_label/{row[2]}.jpg")
-                self.data.insert_shared_data(row[1], row[2])
-                noImages += 1
-                if noImages >= 1000:
-                    break
-            if noImages >= 1000:
-                break
-
-        url = "http://localhost:8000/labeling/receive_images/"
-        files = [
-            ("images", open(f"{dir_name}/{image_path}", "rb")) for image_path in images
-        ]
-        data = {"labels": labels}
-        response = requests.post(url, files=files, data=data)
-        if response.status_code == 200:
-            QMessageBox.information(None, "Success", "Images sent successfully")
-        else:
-            QMessageBox.warning(None, "Error", "Failed to send images")
 
     def update_widget(self):
         data = self.data_dict[self.label]()
@@ -97,7 +63,6 @@ class LabelingData:
             "mental_health": self.data.update_mental_health_label,
             "symptoms": self.data.update_symptoms_concerns_label,
         }
-        print(self.label)
         update = data_update[self.label]
         # Create a dialog window
         dialog = QDialog()

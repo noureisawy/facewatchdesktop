@@ -40,6 +40,8 @@ class Data:
             self.create_labeling_symptoms_concerns()
             # Create a table to store all the data which shared with the server
             self.create_shared_data_table()
+            # Create a table to store all the data which shared with the server
+            self.create_reporting_table()
 
         except sqlite3.Error as e:
             print(f"An error occurred while connecting to the database: {e}")
@@ -49,16 +51,78 @@ class Data:
                 f"An error occurred while connecting to the database: {e}",
             )
 
+    def create_reporting_table(self):
+        # create a table to store reporting data
+        try:
+            self.create_table(
+                """
+            CREATE TABLE IF NOT EXISTS reporting (
+                id INTEGER PRIMARY KEY,
+                text TEXT NOT NULL,
+                created_at NOT NULL DEFAULT CURRENT_TIMESTAMP
+                )
+            """
+            )
+        except sqlite3.Error as e:
+            print(f"An error occurred while creating the reporting table: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the reporting table: {e}",
+            )
+
+    def insert_report(self, text):
+        # insert into reporting table
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO reporting(text)
+                VALUES(?)
+                """,
+                (text,),
+            )
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print(f"An error occurred while inserting into the reporting table: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while inserting into the reporting table: {e}",
+            )
+
+    def get_all_reports(self):
+        # get all the data from the reporting table
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM reporting ORDER BY created_at DESC
+                """
+            )
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(
+                f"An error occurred while getting all the data from the reporting table: {e}"
+            )
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting all the data from the reporting table: {e}",
+            )
+
     def create_shared_data_table(self):
         # create a table to store all the data which shared with the server
         try:
-            self.create_table("""
+            self.create_table(
+                """
                 CREATE TABLE IF NOT EXISTS shared_data (
                     id INTEGER PRIMARY KEY,
                     image_path TEXT NOT NULL,
                     label TEXT NOT NULL
                     )
-            """)
+            """
+            )
         except sqlite3.Error as e:
             print(f"An error occurred while creating the shared data table: {e}")
             QMessageBox.critical(
@@ -66,7 +130,7 @@ class Data:
                 "Error",
                 f"An error occurred while creating the shared data table: {e}",
             )
-    
+
     def insert_shared_data(self, label, image_path):
         # insert into shared data table
         try:
@@ -80,15 +144,13 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(
-                f"An error occurred while inserting into the shared data table: {e}"
-            )
+            print(f"An error occurred while inserting into the shared data table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while inserting into the shared data table: {e}",
             )
-    
+
     def check_if_data_shared_before(self, label, image_path):
         # check if data shared before
         try:
@@ -101,16 +163,13 @@ class Data:
             )
             return cursor.fetchall()
         except sqlite3.Error as e:
-            print(
-                f"An error occurred while checking if data shared before: {e}"
-            )
+            print(f"An error occurred while checking if data shared before: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while checking if data shared before: {e}",
             )
 
-    
     def delete_sharing_data_table(self):
         # delete all the data in the sharing data table
         try:
@@ -122,15 +181,13 @@ class Data:
             )
             self.conn.commit()
         except sqlite3.Error as e:
-            print(
-                f"An error occurred while deleting the shared data table: {e}"
-            )
+            print(f"An error occurred while deleting the shared data table: {e}")
             QMessageBox.critical(
                 None,
                 "Error",
                 f"An error occurred while deleting the shared data table: {e}",
             )
-            
+
     def create_labeling_emotions_table(self):
         # create a table to store labeling emotions associated with user face images
         try:
@@ -336,7 +393,9 @@ class Data:
         # get all mental health labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_mental_health ORDER BY created_at DESC")
+            cursor.execute(
+                "SELECT * FROM labeling_mental_health ORDER BY created_at DESC"
+            )
             return cursor.fetchall()
         except sqlite3.Error as e:
             print(f"An error occurred while getting all mental health labeling: {e}")
@@ -416,7 +475,9 @@ class Data:
         # get all symptoms and concerns labeling
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT * FROM labeling_symptoms_concerns ORDER BY created_at DESC")
+            cursor.execute(
+                "SELECT * FROM labeling_symptoms_concerns ORDER BY created_at DESC"
+            )
             return cursor.fetchall()
         except sqlite3.Error as e:
             print(
