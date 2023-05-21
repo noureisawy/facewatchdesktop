@@ -12,5 +12,5 @@ data.insert_report("sixth text for report")
 data.insert_report("seventh text for report")
 data.insert_report("eighth text for report")
 
-print(data.get_all_reporting_data())
+print(data.get_all_reports())
 print("done")

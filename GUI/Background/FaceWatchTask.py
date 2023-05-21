@@ -20,17 +20,17 @@ class FaceWatchTask(QThread):
         self.is_running = True
         self.interval = interval
         self.notification = notification
-        self.knn = joblib.load("Models/knn_model.joblib")
+        self.knn = joblib.load("Models/facewatchmodels/knn_model.joblib")
         self.facenet = FaceNet()
         self.diseasesModel = tf.keras.models.load_model(
-            "Models/diseaseDetectionModel.h5"
+            "Models/facewatchmodels/diseaseDetectionModel.h5"
         )
         super().__init__()
 
     def take_photo(self):
         print("taking photo")
         try:
-            cap = cv2.VideoCapture(0)
+            cap = cv2.VideoCapture(1)
         except Exception as e:
             print(e)
             QMessageBox.warning("Error", "Camera not found")
@@ -43,6 +43,7 @@ class FaceWatchTask(QThread):
         try:
             self.analyze_frame(frame)
         except Exception as e:
+            print("error analyzing frame")
             print(e)
 
     def save_frame_into_label(self, frame, analysis):
@@ -54,7 +55,6 @@ class FaceWatchTask(QThread):
         ]
         # check if the last update is more than 5 minutes
         row = self.data.get_user_information()[0]
-        print(row)
         data_labeling_dict = {
             "emotions": row[9],
             "alertness": row[10],
@@ -109,7 +109,8 @@ class FaceWatchTask(QThread):
                 sub_file_name = "surprise"
             case "neutral":
                 sub_file_name = "neutral"
-        if self.notification:
+
+        if self.notification.is_show_notification:
             self.notification.show_notification(analysis[0]["dominant_emotion"])
 
         # handle tiredness detection
@@ -154,9 +155,9 @@ class FaceWatchTask(QThread):
         # resize the face image to 160x160
         face_img = cv2.resize(face_img, (160, 160))
         embedding = self.facenet.embeddings([face_img])
-        classes = ["alert", "non_vigilant", "tired"]
-        prediction = classes[self.knn.predict(embedding)[0]]
-        print(prediction)
+        # classes = ["alert", "non_vigilant", "tired"]
+        prediction = self.knn.predict(embedding)
+        prediction = prediction[0]
         self.notification.show_notification(prediction)
         sub_file_name = "tired"
         if prediction == "tired":
@@ -219,12 +220,11 @@ class FaceWatchTask(QThread):
         ]
         face_image = cv2.resize(face_image, (160, 160))
         face_image = np.array([self.normalize_image(face_image)])
-        prediction = self.diseasesModel.predict(face_image)
-        prediction_index = np.argmax(prediction)
-        if prediction[prediction_index] > 0.9:
-            disease = diseases_unique_values[prediction_index]
-            disease_report = diseases_reports[disease]
-            self.data.insert_report(disease_report)
-            self.notification.show_reporting_notification()
-            print("reporting",disease_report)
+        prediction = self.diseasesModel.predict(face_image)[0]
         print("prediction", prediction)
+        prediction_index = np.argmax(prediction)
+        if prediction[prediction_index] > 0.5:
+            disease = diseases_unique_values[prediction_index]
+            self.data.add_disease_prediction(disease)
+            # self.notification.show_reporting_notification()
+            print("reporting", disease)

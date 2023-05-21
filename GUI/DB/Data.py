@@ -42,6 +42,8 @@ class Data:
             self.create_shared_data_table()
             # Create a table to store all the data which shared with the server
             self.create_reporting_table()
+            # Create a table to store diseases prediction
+            self.create_diseases_prediction_table()
 
         except sqlite3.Error as e:
             print(f"An error occurred while connecting to the database: {e}")
@@ -49,6 +51,102 @@ class Data:
                 None,
                 "Error",
                 f"An error occurred while connecting to the database: {e}",
+            )
+
+    def get_last_15_emotions_prediction(self):
+        # get last 15 emotions prediction
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM emotions ORDER BY timestamp DESC LIMIT 15
+                """
+            )
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting last 15 emotions prediction: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting last 15 emotions prediction: {e}",
+            )
+
+    def get_last_15_tiredness_prediction(self):
+        # get last 15 tiredness prediction
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM tiredness ORDER BY timestamp DESC LIMIT 15
+                """
+            )
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting last 15 tiredness prediction: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting last 15 tiredness prediction: {e}",
+            )
+
+    def get_last_15_symptoms_prediction(self):
+        # get last 15 symptoms prediction
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                SELECT * FROM diseases_prediction ORDER BY timestamp DESC LIMIT 15
+                """
+            )
+            return cursor.fetchall()
+        except sqlite3.Error as e:
+            print(f"An error occurred while getting last 15 symptoms prediction: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while getting last 15 symptoms prediction: {e}",
+            )
+
+    def create_diseases_prediction_table(self):
+        # create a table to store diseases prediction
+        try:
+            self.create_table(
+                """
+            CREATE TABLE IF NOT EXISTS diseases_prediction (
+                id INTEGER PRIMARY KEY,
+                diseases TEXT NOT NULL,
+                timestamp DATETIME DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime'))
+            )
+            """
+            )
+        except sqlite3.Error as e:
+            print(
+                f"An error occurred while creating the diseases prediction table: {e}"
+            )
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while creating the diseases prediction table: {e}",
+            )
+
+    def add_disease_prediction(self, prediction):
+        # add disease prediction
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(
+                """
+                INSERT INTO diseases_prediction(diseases)
+                VALUES(?)
+                """,
+                (prediction,),
+            )
+            self.conn.commit()
+        except sqlite3.Error as e:
+            print(f"An error occurred while adding disease prediction: {e}")
+            QMessageBox.critical(
+                None,
+                "Error",
+                f"An error occurred while adding disease prediction: {e}",
             )
 
     def create_reporting_table(self):

@@ -10,9 +10,9 @@ class Notification:
         duration = 5 * 1000
         self.tray.showMessage(notificationTitle, notificationMessage, icon, duration)
 
-    def __init__(self, tray, show_notification):
+    def __init__(self, tray, is_show_notification):
         self.tray = tray
-        self.show_notification = show_notification
+        self.is_show_notification = is_show_notification
 
     def show_labeling_notification(self):
         if not self.show_notification:

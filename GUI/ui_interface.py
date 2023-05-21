@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
 "background-color:#2c313c;\n"
 "}\n"
 "\n"
-"#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #dataAnalysisSelection, #selectGalleryComp, #tiredBtn, #non_vigilantBtn, #alertBtn, #shareBtn, #emotionsBtn, #alertnessBtn, #mentalHealthBtn,#symptomsBtn{\n"
+"#neutralBtn, #surpriseBtn, #angryBtn, #sadBtn, #happyBtn, #fearBtn, #disgustBtn, #dataAnalysisSelection, #selectGalleryComp, #tiredBtn, #non_vigilantBtn, #alertBtn, #shareBtn, #emotionsBtn, #alertnessBtn, #mentalHealthBtn,#symptomsBtn, #getNewReport{\n"
 "background-color:#16191d;\n"
 "border-radius:15px;\n"
 "padding: 10px;\n"
@@ -415,6 +415,7 @@ class Ui_MainWindow(object):
         self.widget_3.setEnabled(True)
         self.widget_3.setObjectName("widget_3")
         self.verticalLayout_29 = QtWidgets.QVBoxLayout(self.widget_3)
+        self.verticalLayout_29.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_29.setObjectName("verticalLayout_29")
         self.frame_9 = QtWidgets.QFrame(self.widget_3)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
@@ -445,6 +446,7 @@ class Ui_MainWindow(object):
         self.widget_10.setSizePolicy(sizePolicy)
         self.widget_10.setObjectName("widget_10")
         self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.widget_10)
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_13.setObjectName("verticalLayout_13")
         self.watchMe = QtWidgets.QCheckBox(self.widget_10)
         self.watchMe.setMinimumSize(QtCore.QSize(150, 50))
@@ -475,7 +477,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.watchInterval.sizePolicy().hasHeightForWidth())
         self.watchInterval.setSizePolicy(sizePolicy)
         self.watchInterval.setMinimumSize(QtCore.QSize(0, 50))
-        self.watchInterval.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.watchInterval.setMaximumSize(QtCore.QSize(250, 50))
         self.watchInterval.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.watchInterval.setFrameShadow(QtWidgets.QFrame.Raised)
         self.watchInterval.setObjectName("watchInterval")
@@ -1052,13 +1054,28 @@ class Ui_MainWindow(object):
         self.label_11.setFont(font)
         self.label_11.setObjectName("label_11")
         self.verticalLayout_27.addWidget(self.label_11)
-        self.label_33 = QtWidgets.QLabel(self.frame_25)
+        self.frame_11 = QtWidgets.QFrame(self.frame_25)
+        self.frame_11.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_11.setObjectName("frame_11")
+        self.horizontalLayout_34 = QtWidgets.QHBoxLayout(self.frame_11)
+        self.horizontalLayout_34.setObjectName("horizontalLayout_34")
+        self.label_33 = QtWidgets.QLabel(self.frame_11)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_33.sizePolicy().hasHeightForWidth())
+        self.label_33.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setUnderline(False)
         self.label_33.setFont(font)
         self.label_33.setWordWrap(True)
         self.label_33.setObjectName("label_33")
-        self.verticalLayout_27.addWidget(self.label_33)
+        self.horizontalLayout_34.addWidget(self.label_33)
+        self.getNewReport = QtWidgets.QPushButton(self.frame_11)
+        self.getNewReport.setObjectName("getNewReport")
+        self.horizontalLayout_34.addWidget(self.getNewReport)
+        self.verticalLayout_27.addWidget(self.frame_11)
         self.verticalLayout_28.addWidget(self.frame_25)
         self.reportingImagesContainer = QtWidgets.QWidget(self.page_6)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
@@ -1512,7 +1529,7 @@ class Ui_MainWindow(object):
         self.dataBtn.setText(_translate("MainWindow", "Data Analysis"))
         self.reportsBtn.setToolTip(_translate("MainWindow", "Reborts"))
         self.reportsBtn.setText(_translate("MainWindow", "Reports"))
-        self.snapHealthBtn.setText(_translate("MainWindow", " SnapHealth"))
+        self.snapHealthBtn.setText(_translate("MainWindow", "Labeling"))
         self.settingsBtn.setToolTip(_translate("MainWindow", "Settings"))
         self.settingsBtn.setText(_translate("MainWindow", "Settings"))
         self.infoBtn.setToolTip(_translate("MainWindow", "Information"))
@@ -1523,7 +1540,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Settings"))
         self.watchMe.setText(_translate("MainWindow", "Watch Me"))
         self.notifyMe.setText(_translate("MainWindow", "Notify Me"))
-        self.label_12.setText(_translate("MainWindow", "Watch Interval"))
+        self.label_12.setText(_translate("MainWindow", "Wtch Intrvl"))
         self.watchInt.setItemText(0, _translate("MainWindow", "15 sec"))
         self.watchInt.setItemText(1, _translate("MainWindow", "1 min"))
         self.watchInt.setItemText(2, _translate("MainWindow", "2 min"))
@@ -1571,7 +1588,8 @@ class Ui_MainWindow(object):
         self.label_13.setText(_translate("MainWindow", "Start :"))
         self.label_14.setText(_translate("MainWindow", "End"))
         self.label_11.setText(_translate("MainWindow", "Reports"))
-        self.label_33.setText(_translate("MainWindow", "We will keep you informed about any potential diseases that we detect. Our system has an accuracy rate of 68% in detecting diseases. We keep improving it."))
+        self.label_33.setText(_translate("MainWindow", "We will keep you informed about any potential diseases that we detect. Our system has an accuracy rate of 68% in detecting diseases. We keep improving it. The report will summarize the last 15 predictions only"))
+        self.getNewReport.setText(_translate("MainWindow", "Generate Report"))
         self.label_31.setText(_translate("MainWindow", "Entered Data"))
         self.shareBtn.setToolTip(_translate("MainWindow", "Your data may contribute to ongoing research in the field."))
         self.shareBtn.setText(_translate("MainWindow", "Share"))
@@ -1602,13 +1620,3 @@ class Ui_MainWindow(object):
         self.label_27.setText(_translate("MainWindow", "Medical History"))
 from Custom_Widgets.Widgets import QCustomSlideMenu, QCustomStackedWidget
 import resources_rc
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

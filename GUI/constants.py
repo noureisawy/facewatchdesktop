@@ -11,18 +11,18 @@ default_options = {
     "alertness": ["tired", "non_vigilant", "alert"],
     "mental_health": ["normal", "depressed", "anxious"],
     "symptoms": [
-        "Normal",
-        "Jaundice Yellowish Skin and Eyes",
+        "Alopecia Hair Loss",
+        "Butterfly Rash Face",
+        "Dehydration Cracked Libs",
         "Drooping Eyelid",
+        "Jaundice Yellowish Skin and Eyes",
+        "Melasma Face",
+        "Moles Face",
+        "Normal",
+        "Puffy Eyes Face",
+        "Sores in face",
         "Stroke Face",
-        "Alopecia Hair Loss",
-        "Puffy Eyes",
-        "Xanthelasma Yellow Spots on Eyelids",
-        "Melasma",
-        "Puffy Eyes",
-        "Sores on Face",
-        "Dehydrated Lips",
-        "Alopecia Hair Loss",
+        "Xanthelasma Yellow Spots on Your Eyelids",
     ],
 }
 
@@ -58,4 +58,4 @@ diseases_reports = {
 
 
 dir_name = "C:/Users/UG/Desktop/research/FaceWatch/Images"
-server_url = "http://206.81.21.176:8000"
+server_url = "http://localhost:8000"

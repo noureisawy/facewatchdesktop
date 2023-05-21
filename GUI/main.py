@@ -17,6 +17,7 @@ from user.User import User
 from LabelingData.LabelingData import LabelingData
 from Background.ShareDataThread import ShareDataThread
 from Reporting.ReportData import ReportData
+from Background.DownloadModelsTask import DownloadModelsTask
 
 
 class MainWindow(QMainWindow):
@@ -170,6 +171,29 @@ class MainWindow(QMainWindow):
         # Report Page
         self.reportData = ReportData(self.ui.reportsDataContainer)
 
+        # downloading models from github
+        self.download_models_task = DownloadModelsTask()
+        self.download_models_task.finished.connect(
+            lambda: print("download models finished")
+        )
+        self.download_models_task.started.connect(
+            lambda: print("download models started")
+        )
+        self.download_models_task.start_task()
+
+        # generate report
+        self.ui.getNewReport.clicked.connect(self.generate_report)
+
+    def generate_report(self):
+        self.ui.getNewReport.setEnabled(False)
+        self.ui.getNewReport.setText("Generating...")
+        QApplication.processEvents()
+
+        self.reportData.add_report()
+        self.ui.getNewReport.setText("Generate Report")
+        self.ui.getNewReport.setEnabled(True)
+        QMessageBox.information(None, "Success", "Report generated successfully")
+
     def share_data(self):
         self.ui.shareBtn.setEnabled(False)
         self.ui.shareBtn.setText("Sharing...")
@@ -252,7 +276,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # TODO: fix this
-    # app.setQuitOnLastWindowClosed(False)
+    app.setQuitOnLastWindowClosed(False)
     # tray icon
 
     tray = SystemTray(parent=app)
