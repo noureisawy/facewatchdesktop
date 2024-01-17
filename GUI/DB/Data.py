@@ -1,7 +1,7 @@
 import sqlite3
 from PyQt5.QtWidgets import QMessageBox
 
-db_path = "C:/Users/UG/Desktop/research/FaceWatch/GUI/DB/emotions.db"
+db_path = "./DB/emotions.db"
 
 from datetime import datetime
 

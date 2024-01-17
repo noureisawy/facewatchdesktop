@@ -6,7 +6,10 @@ from PyQt5.QtCore import Qt
 from DB.Data import Data
 import os
 
-directory = "C:/Users/UG/Desktop/research/FaceWatch/Images"
+project_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+project_path = project_path.replace("\\", "/")
+directory = project_path + "/Images"
 
 
 class ReadImages:

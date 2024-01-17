@@ -36,22 +36,8 @@ Follow these steps to set up the backend project:
 5. **Set Up Database:**
 
    ```bash
-   python manage.py migrate
+   cd GUI & python main.py
    ```
-
-6. **Create Superuser (Optional):**
-
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Run the Development Server:**
-
-   ```bash
-   python manage.py runserver
-   ```
-
-
 
 Contributing:
 If you would like to contribute to the desktop application, please follow the guidelines outlined in the CONTRIBUTING.md file in the repository.
