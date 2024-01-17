@@ -52,10 +52,6 @@ Follow these steps to set up the backend project:
    ```
 
 
-
-Contributing:
-If you would like to contribute to the desktop application, please follow the guidelines outlined in the CONTRIBUTING.md file in the repository.
-
 Quick Document for the Whole Project
 
 The Facewatch project is a health monitoring system that utilizes facial recognition and machine learning algorithms to detect and predict various health conditions. The project consists of a backend server and a desktop application.
