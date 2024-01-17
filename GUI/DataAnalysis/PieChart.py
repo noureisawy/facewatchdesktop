@@ -24,6 +24,13 @@ class PieChart(QChartView):
     def set_data(self, data):
         self.series.clear()
         data_plt = data.get_pie_chart_data()
+        total_count = sum(data_plt.values())
         for item, count in data_plt.items():
-            self.series.append(item, count)
+            if total_count == 0:
+                self.series.append(item, count)
+            else:
+                slice_ = QPieSlice(item, count)
+                percentage = count / total_count * 100
+                slice_.setLabel(f"{item} ({percentage:.1f}%)")
+                self.series.append(slice_)
         self.chart.setTitle(f'Pie Chart Showing {data.type} Over Time')

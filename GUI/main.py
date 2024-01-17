@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
 def handle_labeling_action():
     window.show()
     window.ui.rightMenuContainer.expandMenu()
-    window.ui.rightMenuPages.setCurrentIndex(0)
+    window.ui.snapHealthBtn.click()
 
 
 if __name__ == "__main__":

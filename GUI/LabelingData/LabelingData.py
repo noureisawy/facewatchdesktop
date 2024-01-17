@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import (
 from constants import default_options
 from EmotionGallery.ReadImages import ReadLabeledImage
 import functools
+from datetime import datetime
 
 
 class LabelingData:
@@ -39,7 +40,8 @@ class LabelingData:
             parent_widget = QWidget()
             data_row = Ui_Form()
             data_row.setupUi(parent_widget)
-            data_row.label.setText(row[2])
+            format_date = datetime.strptime(row[2], "%Y%m%d-%H%M%S").strftime("%Y-%m-%d %H:%M:%S")
+            data_row.label.setText(format_date)
             data_row.label_2.setText(row[1])
             data_row.showImage.clicked.connect(
                 functools.partial(self.show_image, created_at=row[2])

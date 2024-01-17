@@ -89,6 +89,16 @@ class Data:
                 f"An error occurred while getting last 15 tiredness prediction: {e}",
             )
 
+    def delete_all_rows_equal_normal(self):
+        cursor = self.conn.cursor()
+        cursor.execute(
+            """
+                DELETE FROM tiredness WHERE tiredness not in ("alert","non_vigilant","tired")
+                """
+        )
+        self.conn.commit()
+        print("done")
+
     def get_last_15_symptoms_prediction(self):
         # get last 15 symptoms prediction
         try:

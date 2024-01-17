@@ -1,5 +1,4 @@
-
-from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QWidget, QHBoxLayout, QLabel, QComboBox, QCheckBox, QMessageBox
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QMessageBox
 from PyQt5.QtGui import QIcon
 import sys
 
@@ -16,7 +15,6 @@ class SystemTray(QSystemTrayIcon):
         super().__init__(parent)
         self.parent = parent
         self.setIcon(QIcon("public/logo.png"))
-        
 
         self.setToolTip("FaceWatch")
 
@@ -24,7 +22,7 @@ class SystemTray(QSystemTrayIcon):
         self.action_hide = QAction("Hide Window")
         menu.addAction(self.action_hide)
 
-        self.labeling_action = QAction("Labeling Emotions")
+        self.labeling_action = QAction("Labeling Images")
         menu.addAction(self.labeling_action)
 
         self.action_show = QAction("Show Window")
@@ -36,7 +34,3 @@ class SystemTray(QSystemTrayIcon):
         self.action_exit.triggered.connect(sys.exit)
 
         self.setContextMenu(menu)
-
-
-
-

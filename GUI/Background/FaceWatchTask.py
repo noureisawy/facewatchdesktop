@@ -6,7 +6,7 @@ import time
 from PyQt5.QtWidgets import QMessageBox
 import joblib
 from keras_facenet import FaceNet
-from constants import dir_name, diseases_unique_values, diseases_reports
+from constants import dir_name, diseases_unique_values
 import tensorflow as tf
 import numpy as np
 
@@ -20,7 +20,7 @@ class FaceWatchTask(QThread):
         self.is_running = True
         self.interval = interval
         self.notification = notification
-        self.knn = joblib.load("Models/facewatchmodels/knn_model.joblib")
+        self.knn = joblib.load("Models/knn_model.joblib")
         self.facenet = FaceNet()
         self.diseasesModel = tf.keras.models.load_model(
             "Models/facewatchmodels/diseaseDetectionModel.h5"
@@ -65,7 +65,7 @@ class FaceWatchTask(QThread):
             "emotions": row[3],
             "alertness": row[4],
             "mental_health": row[5],
-            "symptoms": row[6],
+            "symptoms": row[7],
         }
         data_labeling_insert_dict = {
             "emotions": self.data.insert_emotion_labeling,
@@ -155,10 +155,11 @@ class FaceWatchTask(QThread):
         # resize the face image to 160x160
         face_img = cv2.resize(face_img, (160, 160))
         embedding = self.facenet.embeddings([face_img])
-        # classes = ["alert", "non_vigilant", "tired"]
+        classes = ["alert", "non_vigilant", "tired"]
         prediction = self.knn.predict(embedding)
-        prediction = prediction[0]
+        prediction = classes[prediction[0]]
         self.notification.show_notification(prediction)
+        print("tiredness",prediction)
         sub_file_name = "tired"
         if prediction == "tired":
             sub_file_name = "tired"
@@ -166,6 +167,7 @@ class FaceWatchTask(QThread):
             sub_file_name = "alert"
         elif prediction == "non_vigilant":
             sub_file_name = "non_vigilant"
+        
         filename = f'{dir_name}/{sub_file_name}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
         cv2.imwrite(filename, frame)
         self.data.insert_tiredness(prediction)

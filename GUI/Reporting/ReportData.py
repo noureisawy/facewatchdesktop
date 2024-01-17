@@ -2,7 +2,7 @@ from DB.Data import Data
 from PyQt5.QtWidgets import QWidget, QLabel, QListWidgetItem, QHBoxLayout
 import openai
 openai.api_key = "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"
-def get_completion(prompt, model="gpt-3.5-turbo", temperature=0):
+def get_completion(prompt, model="gpt-3.5-turbo", temperature=0.7):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model,
@@ -39,12 +39,14 @@ to
 1- summarize user emotions
 2- summarize level of alertness
 3- summarize symptoms and diseases prediction
-4- give a user a report about all of that the report should be text in English. maximum length is 100 words. the report should give the user 
+4- give a user a report about all of that the report should be text in English. maximum length is 200 words. the report should give the user 
 information about his well being. give him seggestion about what he should do if the there are overall a negative results.
 it should give the user some motifiation about his will being and give him clues about activities to do.
+5- the app name is Facewatch
 
-the user data will be delimited with ``` here is the user data ```
+the user data will be delimited with ``` 
 
+here is the user data ```
 emotions:
 
 {emotions}
