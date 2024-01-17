@@ -33,24 +33,11 @@ Follow these steps to set up the backend project:
    pip install -r requirements.txt
    ```
 
-5. **Set Up Database:**
+5. **Run The GUI application:**
 
    ```bash
-   python manage.py migrate
+   cd GUI & python main.py 
    ```
-
-6. **Create Superuser (Optional):**
-
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Run the Development Server:**
-
-   ```bash
-   python manage.py runserver
-   ```
-
 
 Quick Document for the Whole Project
 
