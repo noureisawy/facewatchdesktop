@@ -33,14 +33,11 @@ Follow these steps to set up the backend project:
    pip install -r requirements.txt
    ```
 
-5. **Set Up Database:**
+5. **Run The GUI application:**
 
    ```bash
-   cd GUI & python main.py
+   cd GUI & python main.py 
    ```
-
-Contributing:
-If you would like to contribute to the desktop application, please follow the guidelines outlined in the CONTRIBUTING.md file in the repository.
 
 Quick Document for the Whole Project
 
