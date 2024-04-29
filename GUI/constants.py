@@ -56,6 +56,16 @@ diseases_reports = {
     "Xanthelasma Yellow Spots on Your Eyelids": "You have been diagnosed with Xanthelasma Yellow Spots on Your Eyelids. This condition is characterized by yellow patches or bumps on the eyelids, and is often associated with high cholesterol levels. Treatment options may include lifestyle changes or medication to manage underlying health conditions.",
 }
 
+import os
+# Get the absolute path of the current directory
+current_directory = os.path.abspath(os.getcwd())
 
-dir_name = "C:/Users/UG/Desktop/research/FaceWatch/Images"
-server_url = "http://localhost:8000"
+# Get the parent directory
+parent_directory = os.path.dirname(current_directory)
+
+image_directory = os.path.join(parent_directory, "Images")
+
+dir_name = image_directory.replace("\\", "/")
+# server_url = "http://146.190.132.226:8000/admin/labeling/labeledimage/"
+
+server_url = "http://127.0.0.1:8000/admin"

@@ -22,15 +22,15 @@ class FaceWatchTask(QThread):
         self.notification = notification
         self.knn = joblib.load("Models/knn_model.joblib")
         self.facenet = FaceNet()
-        self.diseasesModel = tf.keras.models.load_model(
-            "Models/facewatchmodels/diseaseDetectionModel.h5"
-        )
+        # self.diseasesModel = tf.keras.models.load_model(
+        #     "Models/facewatchmodels/diseaseDetectionModel.h5"
+        # )
         super().__init__()
 
     def take_photo(self):
         print("taking photo")
         try:
-            cap = cv2.VideoCapture(1)
+            cap = cv2.VideoCapture(0)
         except Exception as e:
             print(e)
             QMessageBox.warning("Error", "Camera not found")
@@ -38,8 +38,10 @@ class FaceWatchTask(QThread):
 
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 480)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
         ret, frame = cap.read()
         cap.release()
+        self.analyze_frame(frame)
         try:
             self.analyze_frame(frame)
         except Exception as e:
@@ -73,22 +75,51 @@ class FaceWatchTask(QThread):
             "mental_health": self.data.insert_mental_health_labeling,
             "symptoms": self.data.insert_symptoms_concerns_labeling,
         }
-        for label, last_update in data_labeling_dict.items():
-            if label is None:
-                continue
-            last_update_unix = time.mktime(
-                time.strptime(last_update, "%Y-%m-%d %H:%M:%S.%f")
-            )
-            current_time_unix = time.time()
-            time_diff_seconds = current_time_unix - last_update_unix
-            if time_diff_seconds < 300:
-                # save the frame into the label
-                filename = (
-                    f'{dir_name}/{label}_label/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        data_labeling_type = {
+            "alert":"alertness",
+            "non_vigilant":"alertness",
+            "tired":"alertness",
+            "angry":"emotions",
+            "disgust":"emotions",
+            "fear":"emotions",
+            "happy":"emotions",
+            "neutral":"emotions",
+            "sad":"emotions",
+            "surprise":"emotions",
+        }
+        label = analysis[0]["dominant_emotion"]
+        filename = (
+                    f'{dir_name}/{label}/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
                 )
-                insert_label = data_labeling_insert_dict[label]
-                insert_label(get_last_data[label], time.strftime("%Y%m%d-%H%M%S"))
-                cv2.imwrite(filename, face)
+        print(filename)
+        # insert_label = data_labeling_insert_dict[label]
+        # insert_label(get_last_data[label], time.strftime("%Y%m%d-%H%M%S"))
+        cv2.imwrite(filename, face)
+        # save the frame into the label
+        label_type = data_labeling_type[label]
+        filename = (
+            f'{dir_name}/{label_type}_label/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        )
+        print(filename)
+        insert_label = data_labeling_insert_dict[label_type]
+        insert_label(label_type, time.strftime("%Y%m%d-%H%M%S"))
+        cv2.imwrite(filename, face)
+        # for label, last_update in data_labeling_dict.items():
+        #     if label is None:
+        #         continue
+        #     last_update_unix = time.mktime(
+        #         time.strptime(last_update, "%Y-%m-%d %H:%M:%S")
+        #     )
+        #     current_time_unix = time.time()
+        #     time_diff_seconds = current_time_unix - last_update_unix
+        #     if time_diff_seconds < 300:
+        #         # save the frame into the label
+        #         filename = (
+        #             f'{dir_name}/{label}_label/{time.strftime("%Y%m%d-%H%M%S")}.jpg'
+        #         )
+        #         insert_label = data_labeling_insert_dict[label]
+        #         insert_label(get_last_data[label], time.strftime("%Y%m%d-%H%M%S"))
+        #         cv2.imwrite(filename, face)
 
     def analyze_frame(self, frame):
         sub_file_name = "neutral"
@@ -222,11 +253,11 @@ class FaceWatchTask(QThread):
         ]
         face_image = cv2.resize(face_image, (160, 160))
         face_image = np.array([self.normalize_image(face_image)])
-        prediction = self.diseasesModel.predict(face_image)[0]
-        print("prediction", prediction)
-        prediction_index = np.argmax(prediction)
-        if prediction[prediction_index] > 0.5:
-            disease = diseases_unique_values[prediction_index]
-            self.data.add_disease_prediction(disease)
-            # self.notification.show_reporting_notification()
-            print("reporting", disease)
+        #prediction = self.diseasesModel.predict(face_image)[0]
+        # print("prediction", prediction)
+        # prediction_index = np.argmax(prediction)
+        # if prediction[prediction_index] > 0.5:
+        #     disease = diseases_unique_values[prediction_index]
+        #     self.data.add_disease_prediction(disease)
+        #     # self.notification.show_reporting_notification()
+        #     print("reporting", disease)

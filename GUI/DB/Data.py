@@ -1,5 +1,6 @@
 import sqlite3
 from PyQt5.QtWidgets import QMessageBox
+import os
 
 db_path = "./DB/emotions.db"
 

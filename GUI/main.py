@@ -2,8 +2,10 @@ import sys
 from PySide2 import *
 from ui_interface import Ui_MainWindow
 from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
+from PyQt5.QtCore import Qt
 from DataAnalysis.LineChart import LineChart
-from DataAnalysis.ScatterPlot import ScatterPlot
 from DataAnalysis.PieChart import PieChart
 from DataAnalysis.BarChart import BarChart
 from DataAnalysis.EmotionData import EmotionData
@@ -18,7 +20,149 @@ from LabelingData.LabelingData import LabelingData
 from Background.ShareDataThread import ShareDataThread
 from Reporting.ReportData import ReportData
 from Background.DownloadModelsTask import DownloadModelsTask
+from chatbot.Open_AI import *
 
+# from register import *
+import tkinter as tk
+import requests
+
+
+from constants import dir_name
+print(dir_name)
+
+import subprocess
+class FirstWindow(QMainWindow):
+    registration_successful = pyqtSignal()
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("registeration")
+        self.setGeometry(100, 100, 400, 200)
+       
+        # Username label and input field
+        self.username_label = QLabel("Username:")
+        self.username_input = QLineEdit()
+
+        # Password label and input field
+        self.password_label = QLabel("Password:")
+        self.password_input = QLineEdit()
+        self.password_input.setEchoMode(QLineEdit.Password)
+
+            # Email label and input field for signup
+        self.email_label = QLabel("Email:")
+        self.email_input = QLineEdit()
+
+            # Password confirmation label and input field for signup
+        self.confirm_password_label = QLabel("Confirm Password:")
+        self.confirm_password_input = QLineEdit()
+        self.confirm_password_input.setEchoMode(QLineEdit.Password)
+
+            # Signup button
+        self.signup_button = QPushButton("Signup")
+        self.signup_button.clicked.connect(self.signup)
+
+            # Login button
+        self.login_button = QPushButton("Login")
+        self.login_button.clicked.connect(self.login)
+
+            # Layout
+        layout = QVBoxLayout()
+        layout.addWidget(self.username_label)
+        layout.addWidget(self.username_input)
+        layout.addWidget(self.password_label)
+        layout.addWidget(self.password_input)
+        layout.addWidget(self.email_label)
+        layout.addWidget(self.email_input)
+        layout.addWidget(self.confirm_password_label)
+        layout.addWidget(self.confirm_password_input)
+        layout.addWidget(self.signup_button)
+        layout.addWidget(self.login_button)
+
+            # Central widget
+        central_widget = QWidget()
+        central_widget.setLayout(layout)
+        self.setCentralWidget(central_widget)
+
+    def signup(self):
+        # Get signup data from input fields
+        username = self.username_input.text()
+        password = self.password_input.text()
+        email = self.email_input.text()
+        confirm_password = self.confirm_password_input.text()
+        user = json={"username": username, "password": password, "email": email, "confirm_password": confirm_password}
+        # user.save()
+        # response = requests.post("http://127.0.0.1:8000/authentication/api/signup/", json={"username": username, "password": password, "email": email, "confirm_password":confirm_password})
+        response = requests.post("http://127.0.0.1:8000/authentication/api/signup/", user)
+        if response.ok and password == confirm_password:
+            print("Registration successful!")
+            self.registration_successful.emit()
+            self.open_main_window()        
+        else:
+            print("Registration failed.")
+
+        self.clear_input_fields()
+
+    def login(self):
+        # Get login data from input fields
+        username = self.username_input.text()
+        password = self.password_input.text()
+        user = json={"username": username, "password": password}
+        response = requests.post("http://127.0.0.1:8000/authentication/api/login/", user)
+        if response.ok:
+            print("Login successful!")
+            self.registration_successful.emit()
+            self.open_main_window()        # Launch main application
+        else:
+            print("Login failed.")
+        self.clear_input_fields()
+
+    def open_main_window(self):
+        # Close the signup/login window
+        self.close()
+
+        # Open the main window
+        main_window = MainWindow()
+        main_window.show()
+
+    def clear_input_fields(self):
+        # Clear all input fields
+        self.username_input.clear()
+        self.password_input.clear()
+        self.email_input.clear()
+        self.confirm_password_input.clear()
+        
+# class ChatWindow(QWidget):
+#     def __init__(self):
+#         super().__init__()
+#         self.setWindowTitle("ChatBot Window")
+#         self.setGeometry(100, 100, 400, 200)
+
+#         self.chat_bot = ChatBot()  # Create an instance of the ChatBot
+#         self.layout = QVBoxLayout(self)
+
+#         self.text_edit = QTextEdit()
+#         self.text_edit.setReadOnly(True)
+#         self.layout.addWidget(self.text_edit)
+
+#         self.input_line = QLineEdit()
+#         self.send_button = QPushButton("Send")
+#         self.send_button.clicked.connect(self.send_message)
+        
+#         input_layout = QHBoxLayout()
+#         input_layout.addWidget(self.input_line)
+#         input_layout.addWidget(self.send_button)
+#         self.layout.addLayout(input_layout)
+
+#         self.chat_bot.message_received.connect(self.update_text)
+
+#     def update_text(self, text):
+#         self.text_edit.append(text)
+
+#     def send_message(self):
+#         message = self.input_line.text()
+#         if message:
+#             self.text_edit.append("You: " + message)
+#             self.chat_bot.send_message(message)
+#             self.input_line.clear()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -28,6 +172,41 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
         loadJsonStyle(self, self.ui)
         self.show()
+
+        # self.chat_window = ChatWindow()
+        # self.chat_window.show()
+        # self.ui.chatButton.clicked.connect(self.chat_window.show)
+        # def __init__(self):
+        #     super().__init__()
+        #     self.setWindowTitle("ChatBot App")
+        
+        #     self.chat_bot = ChatBot()  # Create an instance of the ChatBot
+        
+        #     self.central_widget = QWidget()
+        #     self.setCentralWidget(self.central_widget)
+        
+        #     self.layout = QVBoxLayout(self.central_widget)
+        
+        #     self.chat_button = QPushButton("Open Chat")
+        #     self.chat_button.clicked.connect(self.open_chat)
+        
+        #     self.layout.addWidget(self.chat_button)
+        
+        # def open_chat(self):
+        #     self.chat_window.show()
+
+        # self.centralwidget = QtWidgets.QWidget()
+        # self.centralwidget.setObjectName("centralwidget")
+        # self.setCentralWidget(self.centralwidget)
+
+        # self.chatButton = QtWidgets.QPushButton(self.centralwidget)
+        # self.chatButton.setGeometry(QtCore.QRect(10, 10, 100, 50))
+        # self.chatButton.setObjectName("chatButton")
+        # self.chatButton.setText("Chat") 
+        # #chat part
+        # # self.ui.chatButton.clicked.connect(self.open_chat)\
+        # self.openai_chat = ChatBot()
+        # self.chatButton.clicked.connect(self.openai_chat.open_chat)
 
         # EXPAND CENTER MENU WIDGET SIZE
         self.ui.settingsBtn.clicked.connect(
@@ -73,7 +252,6 @@ class MainWindow(QMainWindow):
         self.tirednessData = TirednessData(self.ui.dateTimeStart, self.ui.dateTimeEnd)
         self.selectedData = self.emotionData
         self.ui.lineChart = LineChart(self.ui.lineChartPage, self.selectedData)
-        self.ui.scatterPlot = ScatterPlot(self.ui.scatterPlotPage, self.selectedData)
         self.ui.pieChart = PieChart(self.ui.pieChartPage, self.selectedData)
         self.ui.barChart = BarChart(self.ui.barChartPage, self.selectedData)
 
@@ -184,6 +362,21 @@ class MainWindow(QMainWindow):
         # generate report
         self.ui.getNewReport.clicked.connect(self.generate_report)
 
+        # handle navigation
+        self.ui.settingsBtn.clicked.connect(lambda: self.ui.leftStackWidget.setCurrentWidget(self.ui.page))
+        self.ui.infoBtn.clicked.connect(lambda: self.ui.leftStackWidget.setCurrentWidget(self.ui.page_2))
+        self.ui.helpBtn.clicked.connect(lambda: self.ui.leftStackWidget.setCurrentWidget(self.ui.page_3))
+        self.ui.homeBtn.clicked.connect(lambda: self.ui.centerMenuPages.setCurrentWidget(self.ui.page_4))
+        self.ui.dataBtn.clicked.connect(lambda: self.ui.centerMenuPages.setCurrentWidget(self.ui.page_5))
+        self.ui.reportsBtn.clicked.connect(lambda: self.ui.centerMenuPages.setCurrentWidget(self.ui.page_6))
+        self.ui.snapHealthBtn.clicked.connect(lambda: self.ui.centerMenuPages.setCurrentWidget(self.ui.page_7))
+        self.ui.barChartBtn.clicked.connect(lambda: self.ui.dataAnalysisPages.setCurrentWidget(self.ui.barChartPage))
+        self.ui.pieChartBtn.clicked.connect(lambda: self.ui.dataAnalysisPages.setCurrentWidget(self.ui.pieChartPage))
+        self.ui.lineChartBtn.clicked.connect(lambda: self.ui.dataAnalysisPages.setCurrentWidget(self.ui.lineChartPage))
+        
+
+
+        
     def generate_report(self):
         self.ui.getNewReport.setEnabled(False)
         self.ui.getNewReport.setText("Generating...")
@@ -267,6 +460,7 @@ class MainWindow(QMainWindow):
 
 
 def handle_labeling_action():
+    window = MainWindow()
     window.show()
     window.ui.rightMenuContainer.expandMenu()
     window.ui.snapHealthBtn.click()
@@ -276,14 +470,30 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
 
     # TODO: fix this
-    app.setQuitOnLastWindowClosed(False)
+    # \app.setQuitOnLastWin
+    # dowClosed(False)
     # tray icon
 
     tray = SystemTray(parent=app)
     tray.show()
-    window = MainWindow()
-    tray.action_hide.triggered.connect(window.hide)
-    tray.action_show.triggered.connect(window.show)
-    tray.labeling_action.triggered.connect(handle_labeling_action)
 
+    registerwindow = FirstWindow()
+    def show_window():
+        window = MainWindow()
+        window.show()
+
+    # registerwindow.show()
+
+    registerwindow.registration_successful.connect(show_window)
+    app.lastWindowClosed.connect(app.quit)
+
+    tray.action_hide.triggered.connect(registerwindow.hide)
+    tray.action_show.triggered.connect(registerwindow.show)
+    tray.labeling_action.triggered.connect(handle_labeling_action)
+    registerwindow.show()
     sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     window = FirstWindow()
+#     window.show()
+#     sys.exit(app.exec_())

@@ -49,11 +49,49 @@ class ShareDataThread(QThread):
         else:
             self.error.emit("Error sending images")
 
-    def send_images(self, images, labels):
+    def send_images(self, images, labels, user_id, token):
         url = f"{server_url}/labeling/receive_images/"
+        headers = {"authentication": f"Bearer {token}"}
         files = [
             ("images", open(f"{dir_name}/{image_path}", "rb")) for image_path in images
         ]
-        data = {"labels": labels}
-        response = requests.post(url, files=files, data=data)
+        data = {"labels": labels,
+                "user_id": user_id}
+        response = requests.post(url,headers=headers, files=files, data=data)
         return response.status_code == 200
+    
+# class SignupLoginThread(QThread):
+#     finished = pyqtSignal()
+#     error = pyqtSignal(str)
+
+#     def __init__(self, username, password, action):
+#         super().__init__()
+#         self.username = username
+#         self.password = password
+#         self.action = action  # 'signup' or 'login'
+
+#     def run(self):
+#         url = f"{server_url}/api/signup/"  # Use appropriate endpoint for signup/login
+#         data = {'username': self.username, 'password': self.password}
+        
+#         try:
+#             response = requests.post(url, data=data)
+#             if response.status_code == 200:
+#                 self.finished.emit()
+#             else:
+#                 self.error.emit(f"Error {self.action}: {response.text}")
+#         except Exception as e:
+#             self.error.emit(f"Error {self.action}: {str(e)}")
+
+#     def run(self):
+#         url = f"{server_url}/api/login/"  # Use appropriate endpoint for signup/login
+#         data = {'username': self.username, 'password': self.password}
+        
+#         try:
+#             response = requests.get(url, data=data)
+#             if response.status_code == 200:
+#                 self.finished.emit()
+#             else:
+#                 self.error.emit(f"Error {self.action}: {response.text}")
+#         except Exception as e:
+#             self.error.emit(f"Error {self.action}: {str(e)}")
